@@ -1,0 +1,22 @@
+.figure {
+  max-width: 272px;
+  width: 100%;
+  height: 208px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  margin-left: 16px;
+  margin-right: 24px;
+}
+
+.p {
+  margin: 0;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.p:first-of-type {
+  display: flex;
+  align-items: center;
+}
