@@ -1,34 +1,45 @@
-.ol {
+.choosenIngredientList,
+.burgerTopping {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.p {
+.burgerTopping {
+  max-height: 40vh;
+  overflow-y: scroll;
+}
+
+.burgerTopping::-webkit-scrollbar {
+  width: 10px;
+}
+
+.burgerTopping::-webkit-scrollbar-track {
+  border-radius: 2px;
+  background: #2f2f37;
+}
+
+.burgerTopping::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+  border-radius: 2px;
+}
+
+.toppingItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.submitSection {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.toppingTotalPrice {
   margin: 0;
   margin-top: 8px;
   margin-right: 40px;
   text-align: center;
   display: flex;
   align-items: center;
-}
-
-.scrollbar {
-  max-height: 40vh;
-  overflow-y: scroll;
-}
-
-.scrollbar::-webkit-scrollbar {
-  width: 10px;
-}
-
-.scrollbar::-webkit-scrollbar-track {
-  border-radius: 2px;
-  background: #2F2F37;
-  
-}
-
-.scrollbar::-webkit-scrollbar-thumb {
-  background-color: #8585AD;
-  border-radius: 2px;
 }

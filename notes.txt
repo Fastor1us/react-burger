@@ -1,0 +1,7 @@
+Prettier
+
+Запуск:
+npx prettier . --write
+
+Проверка
+npx prettier . --check
