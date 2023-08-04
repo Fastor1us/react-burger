@@ -6,10 +6,12 @@ import IngredientItem from './ingredient-item/ingredient-item';
 
 export default function IngredientSection(props) {
   const arrCards = props.data
-  .filter((card) => {
-    return card.type === props.type;
-  })
-  .map((card) => { return card });
+    .filter((card) => {
+      return card.type === props.type;
+    })
+    .map((card) => {
+      return card;
+    });
   return (
     <>
       <section>
@@ -20,17 +22,13 @@ export default function IngredientSection(props) {
           {props.children}
         </h2>
         <ol className={ingredientsSectionStyles.sectionList}>
-            {arrCards.map( (card) => {
-              return (
-                <li className='mt-8' key={card._id}>
-                  <IngredientItem
-                    price={card.price}
-                    name={card.name}
-                    image={card.image}
-                  />
-                </li>
-              )
-            })}
+          {arrCards.map((card) => {
+            return (
+              <li className='mt-8' key={card._id}>
+                <IngredientItem {...card} />
+              </li>
+            );
+          })}
         </ol>
       </section>
     </>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { dataPropTypes } from '../utils/prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -11,26 +11,23 @@ export default function BurgerIngredients(props) {
   const { ingredientsMainBlock, ingredientsTab, ingredientsMenu } =
     burgerIngredientsStyles;
 
-  useEffect(() => {
+  const onTabClick = (activeTab) => {
+    setCurrent(activeTab);
     document
-      .querySelector(`#${current}`)
+      .querySelector(`#${activeTab}`)
       .scrollIntoView({ behavior: 'smooth' });
-  }, [current]);
+  }
 
   return (
     <section className={ingredientsMainBlock}>
       <div className={ingredientsTab}>
-        <Tab value='Булки' active={current === 'Булки'} onClick={setCurrent}>
+        <Tab value='Булки' active={current === 'Булки'} onClick={onTabClick}>
           Булки
         </Tab>
-        <Tab value='Соусы' active={current === 'Соусы'} onClick={setCurrent}>
+        <Tab value='Соусы' active={current === 'Соусы'} onClick={onTabClick}>
           Соусы
         </Tab>
-        <Tab
-          value='Начинки'
-          active={current === 'Начинки'}
-          onClick={setCurrent}
-        >
+        <Tab value='Начинки' active={current === 'Начинки'} onClick={onTabClick}>
           Начинки
         </Tab>
       </div>

@@ -8,14 +8,18 @@ import {
   Button,
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import Modal from '../modal/modal';
+import ModalOrderDetails from '../modal/modal-order-details/modal-order-details';
 
 export default function BurgerConstructor(props) {
+  const [showModal, setShowModal] = React.useState(false);
   const bunData = props.data.find((i) => i.type === 'bun');
   const sauceData = props.data.filter((i) => i.type === 'sauce');
   const mainData = props.data.filter((i) => i.type === 'main');
-  const totalPrice = props.data
-    .map((i) => i.price)
-    .reduce((acc, curr) => acc + curr) + bunData.price;
+  const totalPrice =
+    props.data.map((i) => i.price).reduce((acc, curr) => acc + curr) +
+    bunData.price;
+  const onItemClick = () => setShowModal(true);
 
   const {
     choosenIngredientList,
@@ -70,10 +74,20 @@ export default function BurgerConstructor(props) {
           </span>
           <CurrencyIcon type='primary' />
         </p>
-        <Button htmlType='button' type='primary' size='medium'>
+        <Button
+          htmlType='button'
+          type='primary'
+          size='medium'
+          onClick={onItemClick}
+        >
           Оформить заказ
         </Button>
       </section>
+      {showModal && (
+        <Modal setVisible={setShowModal}>
+          <ModalOrderDetails />
+        </Modal>
+      )}
     </section>
   );
 }
