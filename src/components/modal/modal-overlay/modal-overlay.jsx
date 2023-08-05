@@ -4,7 +4,7 @@ import modalOverlayStyles from './modal-overlay.module.css';
 
 export default function ModalOverlay(props) {
   return (
-    <section
+    <div
       className={modalOverlayStyles.overlay}
       onClick={(e) => {
         if (e.target === e.currentTarget) {
@@ -12,12 +12,10 @@ export default function ModalOverlay(props) {
         }
       }}
     >
-      {props.children}
-    </section>
+    </div>
   );
 }
 
 ModalOverlay.propTypes = {
-  children: PropTypes.element.isRequired,
   setVisible: PropTypes.func,
 };

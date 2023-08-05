@@ -4,7 +4,7 @@ import modalIngredientStyles from './modal-ingredient-details.module.css';
 
 export default function ModalIngredientDetails(props) {
   return (
-    <React.Fragment>
+    <>
       <img
         src={props.image}
         alt={props.name}
@@ -61,7 +61,7 @@ export default function ModalIngredientDetails(props) {
           </p>
         </li>
       </ol>
-    </React.Fragment>
+    </>
   );
 }
 

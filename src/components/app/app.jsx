@@ -23,7 +23,7 @@ export default function App() {
 
   return (
     <>
-      {(data?.success && (
+      {data?.success ? (
         <div className={appStyles.page}>
           <AppHeader />
           <main className={appStyles.main}>
@@ -38,7 +38,7 @@ export default function App() {
             </section>
           </main>
         </div>
-      )) || <h1>При загрузке данных возникла ошибка!</h1>}
+      ) : <h1>При загрузке данных возникла ошибка!</h1>}
     </>
   );
 }
