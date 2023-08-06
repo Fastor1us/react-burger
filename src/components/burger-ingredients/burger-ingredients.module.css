@@ -1,0 +1,26 @@
+.ingredientsMainBlock {
+  max-width: 600px;
+}
+
+.ingredientsTab {
+  display: flex;
+}
+
+.ingredientsMenu {
+  max-height: calc(100vh - 300px);
+  overflow-y: scroll;
+}
+
+.ingredientsMenu::-webkit-scrollbar {
+  width: 10px;
+}
+
+.ingredientsMenu::-webkit-scrollbar-track {
+  border-radius: 2px;
+  background: #2f2f37;
+}
+
+.ingredientsMenu::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+  border-radius: 2px;
+}

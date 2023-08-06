@@ -1,0 +1,7 @@
+.orderCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  top: -30px;
+}
