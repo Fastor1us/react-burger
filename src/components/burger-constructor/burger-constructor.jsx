@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { dataPropTypes } from '../utils/prop-types';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import {
@@ -10,15 +8,17 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import ModalOrderDetails from '../modal/modal-order-details/modal-order-details';
+import { DataContext } from '../utils/dataContext';
+import { TotalPriceContext } from '../utils/totalPriceContext';
 
-export default function BurgerConstructor(props) {
+
+export default function BurgerConstructor() {
   const [showModal, setShowModal] = React.useState(false);
-  const bunData = props.data.find((i) => i.type === 'bun');
-  const sauceData = props.data.filter((i) => i.type === 'sauce');
-  const mainData = props.data.filter((i) => i.type === 'main');
-  const totalPrice =
-    props.data.map((i) => i.price).reduce((acc, curr) => acc + curr) +
-    bunData.price;
+  const { data } = React.useContext(DataContext);
+  const { totalPrice, dispatchTotalPrice } = React.useContext(TotalPriceContext);
+  const burgerBun = data.data.find((i) => i.type === 'bun');
+  const burgerIngredients = data.data.filter((i) => (i.type === 'sauce' || i.type === 'main'));
+  dispatchTotalPrice({ type: 'getTotalPrice', ingredients: [burgerBun, burgerBun, ...burgerIngredients]});
   const onItemClick = () => setShowModal(true);
 
   const {
@@ -36,14 +36,13 @@ export default function BurgerConstructor(props) {
           <ConstructorElement
             type='top'
             isLocked={true}
-            text={bunData.name}
-            price={bunData.price}
-            thumbnail={bunData.image}
+            text={`${burgerBun.name} (верх)`}
+            price={burgerBun.price}
+            thumbnail={burgerBun.image}
           />
         </li>
         <ol className={burgerTopping}>
-          {[sauceData, mainData].map((arr) => {
-            return arr.map((item) => {
+          {burgerIngredients.map((item) => {
               return (
                 <li key={item._id} className={`${toppingItem} mb-4 mr-2`}>
                   <DragIcon type='primary' />
@@ -54,16 +53,16 @@ export default function BurgerConstructor(props) {
                   />
                 </li>
               );
-            });
-          })}
+            })
+          }
         </ol>
         <li className='ml-8 mb-10'>
           <ConstructorElement
             type='bottom'
             isLocked={true}
-            text={bunData.name}
-            price={bunData.price}
-            thumbnail={bunData.image}
+            text={`${burgerBun.name} (низ)`}
+            price={burgerBun.price}
+            thumbnail={burgerBun.image}
           />
         </li>
       </ol>
@@ -84,14 +83,10 @@ export default function BurgerConstructor(props) {
         </Button>
       </section>
       {showModal && (
-        <Modal setVisible={setShowModal}>
+        <Modal setVisible={setShowModal} >
           <ModalOrderDetails />
         </Modal>
       )}
     </section>
   );
 }
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(dataPropTypes).isRequired,
-};
