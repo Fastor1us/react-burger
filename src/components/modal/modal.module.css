@@ -27,6 +27,18 @@
 }
 
 .modalCloseBtn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalCloseBtn:hover {
+  cursor: pointer;
+}
+
+.modalCloseBtnImage {
   width: 24px;
   height: 24px;
 }

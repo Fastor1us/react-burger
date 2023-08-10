@@ -32,6 +32,7 @@ export default function Modal(props) {
             }}
           >
             <img
+              className={modalStyles.modalCloseBtnImage}
               src={closeBtnPng}
               alt='close-button'
             />

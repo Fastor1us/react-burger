@@ -1,25 +1,34 @@
 import React from 'react';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerConstructorStyles from './burger-constructor.module.css';
-import {
-  CurrencyIcon,
-  Button,
-  DragIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import ModalOrderDetails from '../modal/modal-order-details/modal-order-details';
 import { DataContext } from '../utils/dataContext';
-import { TotalPriceContext } from '../utils/totalPriceContext';
+import { postOrder } from '../utils/api';
 
 
 export default function BurgerConstructor() {
+  const [orderInfo, setOrderInfo] = React.useState();
   const [showModal, setShowModal] = React.useState(false);
   const { data } = React.useContext(DataContext);
-  const { totalPrice, dispatchTotalPrice } = React.useContext(TotalPriceContext);
   const burgerBun = data.data.find((i) => i.type === 'bun');
-  const burgerIngredients = data.data.filter((i) => (i.type === 'sauce' || i.type === 'main'));
-  dispatchTotalPrice({ type: 'getTotalPrice', ingredients: [burgerBun, burgerBun, ...burgerIngredients]});
-  const onItemClick = () => setShowModal(true);
+  const burgerIngredients = data.data.filter((item) => (item.type === 'sauce' || item.type === 'main'));
+  const totalPrice = [burgerBun, burgerBun, ...burgerIngredients].map((i) => i.price).reduce((acc, curr) => acc + curr);
+  const onOrderBtnClick = () => {
+    const burgerBunId = data.data.find((i) => i.type === 'bun')._id;
+    const burgerIngredientsId = data.data.filter((i) => (i.type === 'sauce' || i.type === 'main')).map(i=>i._id);
+    postOrder([burgerBunId, ...burgerIngredientsId])
+        .then((data) => {
+          if (data) {
+            setOrderInfo(data);
+            setShowModal(true);
+          } else {
+            console.log('ошибка получения данных!');
+          }
+        })
+        .catch((err) => console.log(err));
+  }
 
   const {
     choosenIngredientList,
@@ -77,14 +86,14 @@ export default function BurgerConstructor() {
           htmlType='button'
           type='primary'
           size='medium'
-          onClick={onItemClick}
+          onClick={onOrderBtnClick}
         >
           Оформить заказ
         </Button>
       </section>
       {showModal && (
         <Modal setVisible={setShowModal} >
-          <ModalOrderDetails />
+          <ModalOrderDetails orderInfo={orderInfo}/>
         </Modal>
       )}
     </section>
