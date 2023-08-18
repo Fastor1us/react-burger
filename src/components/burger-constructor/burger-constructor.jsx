@@ -1,80 +1,93 @@
-import React from 'react';
-import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useCallback, useEffect }  from 'react';
 import burgerConstructorStyles from './burger-constructor.module.css';
-import { CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import ModalOrderDetails from '../modal/modal-order-details/modal-order-details';
-import { DataContext } from '../utils/dataContext';
-import { postOrder } from '../utils/api';
+import { useSelector } from 'react-redux';
+import ChosenIngredient from './chosen-ingredient/chosen-ingredient';
+import { useDispatch } from 'react-redux';
+import { changeIngredientPosition } from '../../store/slicers/chosenIngredientsSlicer';
+import { addIngredient } from '../../store/slicers/chosenIngredientsSlicer';
+import { setOrderInfo } from '../../store/slicers/orderInfoSlicer';
+import { useDrop } from 'react-dnd';
+import { dataAPI } from '../utils/api';
 
 
 export default function BurgerConstructor() {
-  const [orderInfo, setOrderInfo] = React.useState();
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = React.useState(false);
-  const { data } = React.useContext(DataContext);
-  const burgerBun = data.data.find((i) => i.type === 'bun');
-  const burgerIngredients = data.data.filter((item) => (item.type === 'sauce' || item.type === 'main'));
-  const totalPrice = [burgerBun, burgerBun, ...burgerIngredients].map((i) => i.price).reduce((acc, curr) => acc + curr);
-  const onOrderBtnClick = () => {
-    const burgerBunId = data.data.find((i) => i.type === 'bun')._id;
-    const burgerIngredientsId = data.data.filter((i) => (i.type === 'sauce' || i.type === 'main')).map(i=>i._id);
-    postOrder([burgerBunId, ...burgerIngredientsId])
-        .then((data) => {
-          if (data) {
-            setOrderInfo(data);
-            setShowModal(true);
-          } else {
-            console.log('ошибка получения данных!');
-          }
-        })
-        .catch((err) => console.log(err));
-  }
+  const [totalPrice, setTotalPrice] = React.useState(0);
+  const { bun, topping } = useSelector(state => state.chosenIngredients);
+
+  useEffect(() => {
+    setTotalPrice([bun, bun, ...topping].map((i) => i.price).reduce((acc, curr) => acc + curr) || 0);
+  }, [bun, topping]);
+
+  const [getOrderInfo, { data, isSuccess }] = dataAPI.usePostOrderInfoMutation();
+  useEffect(() => {
+    isSuccess && dispatch(setOrderInfo({data, isSuccess})) && setShowModal(true)
+  }, [isSuccess]);
+  const onOrderBtnClick = () => { getOrderInfo([bun, ...topping]) }
+
+  const moveIngredient = useCallback((dragIndex, hoverIndex) => {
+    dispatch(changeIngredientPosition({prevIndex: dragIndex, newIndex: hoverIndex}))
+  }, []);
+
+  const renderIngredient = useCallback((item, index, moveIngredient) => {
+    return (
+      <ChosenIngredient key={item.key} 
+        data={item}  
+        index={index}
+        moveIngredient={moveIngredient}
+      />
+    )
+  }, []);
+
+  const [{ getItem }, dropRef] = useDrop({
+    accept: 'newIngredient',
+    drop(item) {
+      dispatch(addIngredient(item));
+    },
+    collect: (monitor) => ({
+      getItem: monitor.getItem(),
+    })
+  });
 
   const {
+    constructor,
     choosenIngredientList,
     burgerTopping,
-    toppingItem,
     submitSection,
     toppingTotalPrice,
   } = burgerConstructorStyles;
 
   return (
     <section>
-      <ol className={choosenIngredientList}>
-        <li className='ml-8 mb-4'>
-          <ConstructorElement
-            type='top'
-            isLocked={true}
-            text={`${burgerBun.name} (верх)`}
-            price={burgerBun.price}
-            thumbnail={burgerBun.image}
-          />
-        </li>
-        <ol className={burgerTopping}>
-          {burgerIngredients.map((item) => {
-              return (
-                <li key={item._id} className={`${toppingItem} mb-4 mr-2`}>
-                  <DragIcon type='primary' />
-                  <ConstructorElement
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                  />
-                </li>
-              );
-            })
-          }
+      <section ref={dropRef} className={getItem && !('index' in getItem) ? constructor : ''}>
+        <ol className={choosenIngredientList}>
+          <li className='ml-8 mb-4'>
+            <ConstructorElement
+              type='top'
+              isLocked={true}
+              text={`${bun.name || 'выберите булочку!'} (верх)`}
+              price={bun.price || 0}
+              thumbnail={`${bun.image || 'https://imgholder.ru/80x40&font=kelson'}`}
+            />
+          </li>
+          <ol className={burgerTopping}>
+            {topping.map((item, index) => renderIngredient(item, index, moveIngredient))}
+          </ol>
+          <li className='ml-8 mb-10'>
+            <ConstructorElement
+              type='bottom'
+              isLocked={true}
+              text={`${bun.name || 'выберите булочку!'} (низ)`}
+              price={bun.price || 0}
+              thumbnail={`${bun.image || 'https://imgholder.ru/80x40&font=kelson'}`}
+            />
+          </li>
         </ol>
-        <li className='ml-8 mb-10'>
-          <ConstructorElement
-            type='bottom'
-            isLocked={true}
-            text={`${burgerBun.name} (низ)`}
-            price={burgerBun.price}
-            thumbnail={burgerBun.image}
-          />
-        </li>
-      </ol>
+      </section>
       <section className={submitSection}>
         <p className={toppingTotalPrice}>
           <span className='text text_type_digits-default mr-2'>
@@ -93,7 +106,7 @@ export default function BurgerConstructor() {
       </section>
       {showModal && (
         <Modal setVisible={setShowModal} >
-          <ModalOrderDetails orderInfo={orderInfo}/>
+          <ModalOrderDetails />
         </Modal>
       )}
     </section>

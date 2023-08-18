@@ -8,6 +8,8 @@
   margin: 0;
   margin-left: 16px;
   margin-right: 24px;
+  position: relative;
+  cursor: pointer;
 }
 
 .ingredientDescription {
@@ -18,5 +20,18 @@
 
 .ingredientDescription:first-of-type {
   display: flex;
+  align-items: center;
+}
+
+.ingredientAmount {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #4C4CFF;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
