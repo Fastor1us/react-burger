@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect }  from 'react';
+import React, { useCallback, useEffect, useMemo }  from 'react';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
@@ -19,13 +19,13 @@ export default function BurgerConstructor() {
   const [totalPrice, setTotalPrice] = React.useState(0);
   const { bun, topping } = useSelector(state => state.chosenIngredients);
 
-  useEffect(() => {
+  useMemo(() => {
     setTotalPrice([bun, bun, ...topping].map((i) => i.price).reduce((acc, curr) => acc + curr) || 0);
   }, [bun, topping]);
 
   const [getOrderInfo, { data, isSuccess }] = dataAPI.usePostOrderInfoMutation();
   useEffect(() => {
-    isSuccess && dispatch(setOrderInfo({data, isSuccess})) && setShowModal(true)
+    isSuccess && dispatch(setOrderInfo({data, isSuccess})) && setShowModal(true);
   }, [isSuccess]);
   const onOrderBtnClick = () => { getOrderInfo([bun, ...topping]) }
 

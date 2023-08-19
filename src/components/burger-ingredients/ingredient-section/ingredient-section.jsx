@@ -9,7 +9,7 @@ import { setTabState } from '../../../store/slicers/activeTabSlicer';
 
 export default function IngredientSection(props) {
   const dispatch = useDispatch();
-  const data = useSelector(store => store.data.data);
+  const data = useSelector(store => store.availableIngredients.data);
 
   const intersectionCallback = useCallback((entries) => {
     entries.forEach((entry) => {
@@ -33,6 +33,8 @@ export default function IngredientSection(props) {
         observerOptions,
       );
       observer.observe(document.querySelector(`#${props.children}`));
+
+      return () => observer.disconnect();
   }, []);
 
   const arrCards = data

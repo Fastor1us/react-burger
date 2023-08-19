@@ -2,13 +2,13 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import { dataAPI } from '../components/utils/api';
 
-import dataSlice from './slicers/dataSlicer';
+import availableIngredientsSlicer from './slicers/availableIngredientsSlicer';
 import chosenIngredientsSlicer from './slicers/chosenIngredientsSlicer';
 import orderInfoSlicer from './slicers/orderInfoSlicer';
 import activeTabSlicer from './slicers/activeTabSlicer';
 
 const rootReducer = combineReducers({
-  data: dataSlice,
+  availableIngredients: availableIngredientsSlicer,
   chosenIngredients: chosenIngredientsSlicer,
   orderInfo: orderInfoSlicer,
   activeTab: activeTabSlicer,

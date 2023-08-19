@@ -8,9 +8,9 @@ import { useSelector } from 'react-redux';
 export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = React.useState('Булки');
 
-  const isLoading = useSelector(state => state.data.isLoading);
-  const isError = useSelector(state => state.data.isError);
-  const isSuccess = useSelector(state => state.data.isSuccess);
+  const isLoading = useSelector(state => state.availableIngredients.isLoading);
+  const isError = useSelector(state => state.availableIngredients.isError);
+  const isSuccess = useSelector(state => state.availableIngredients.isSuccess);
   
   const tabsStatus = useSelector(state => state.activeTab);
   useEffect(() => {

@@ -5,7 +5,7 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 import appStyles from './app.module.css';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch } from 'react-redux';
-import { setData } from '../../store/slicers/dataSlicer';
+import { setAvailableIngredients } from '../../store/slicers/availableIngredientsSlicer';
 import { dataAPI } from '../utils/api';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -15,7 +15,7 @@ export default function App() {
   const dispatch = useDispatch();
   const { data, isLoading, isError, isSuccess } = dataAPI.useFetchAllDataQuery();
   useEffect(() => {
-    dispatch(setData({data, isLoading, isError, isSuccess}));
+    dispatch(setAvailableIngredients({data, isLoading, isError, isSuccess}));
   }, [isLoading]);
   
   return (

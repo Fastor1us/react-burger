@@ -2,11 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {data: [], isLoading: false, isError: false, isSuccess: false};
 
-const dataSlicer = createSlice({
-  name: 'data',
+const availableIngredientsSlicer = createSlice({
+  name: 'availableIngredients',
   initialState,
   reducers: {
-    setData(state, action) {
+    setAvailableIngredients(state, action) {
       state.data = action.payload.data?.data || [];
       state.isLoading = action.payload.isLoading;
       state.isError = action.payload.isError;
@@ -15,6 +15,6 @@ const dataSlicer = createSlice({
   }
 });
 
-export const { setData } = dataSlicer.actions;
+export const { setAvailableIngredients } = availableIngredientsSlicer.actions;
 
-export default dataSlicer.reducer;
+export default availableIngredientsSlicer.reducer;

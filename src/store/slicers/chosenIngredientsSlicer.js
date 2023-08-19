@@ -1,5 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { v4 as makeUUIDv4 } from 'uuid';
+import { createSlice, nanoid } from '@reduxjs/toolkit';
 
 const initialState = { bun: { price: 0 }, topping: [] };
 
@@ -7,31 +6,20 @@ const chosenIngredientsSlicer = createSlice({
   name: 'chosenIngredients',
   initialState,
   reducers: {
-    addIngredient(state, action) {
-      if (action.payload.type === 'bun') {
-        state.bun = action.payload;
-      } else {
-        // make an unique key for rendering in map
-        // let newIngredientData = {};
-        // Object.assign(newIngredientData, action.payload);
-        // if (state.topping.length !== 0) {
-        //   const allSortedKeys = state.topping.map(i=>i.key).sort((a, b) => { return a - b });
-        //   if (allSortedKeys[allSortedKeys.length - 1] === state.topping.length - 1) {
-        //     newIngredientData.key = state.topping.length;
-        //   } else {
-        //     newIngredientData.key = allSortedKeys.indexOf(
-        //       allSortedKeys.find((item, index) => {
-        //       return item !== index;
-        //     }));
-        //   }
-        // } else {
-        //   newIngredientData.key = 0;
-        // }
-        let newIngredientData = {};
-        Object.assign(newIngredientData, action.payload);
-        newIngredientData.key = makeUUIDv4();
-        state.topping.push(newIngredientData);
-      }
+    addIngredient: {
+      reducer: (state, action) => {
+        if (action.payload.data.type === 'bun') {
+          state.bun = action.payload.data;
+        } else {
+          state.topping.push(action.payload.data);
+        }
+      },
+      prepare: (payload) => {
+        let data = {};
+        Object.assign(data, payload);
+        data.key = nanoid();
+        return { payload: { data }}
+      },
     },
     removeIngredient(state, action) {
       state.topping.splice(action.payload, 1);
