@@ -1,72 +1,93 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { dataPropTypes } from '../utils/prop-types';
-import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useCallback, useEffect, useMemo }  from 'react';
 import burgerConstructorStyles from './burger-constructor.module.css';
-import {
-  CurrencyIcon,
-  Button,
-  DragIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import ModalOrderDetails from '../modal/modal-order-details/modal-order-details';
+import { useSelector } from 'react-redux';
+import ChosenIngredient from './chosen-ingredient/chosen-ingredient';
+import { useDispatch } from 'react-redux';
+import { changeIngredientPosition } from '../../store/slicers/chosenIngredientsSlicer';
+import { addIngredient } from '../../store/slicers/chosenIngredientsSlicer';
+import { setOrderInfo } from '../../store/slicers/orderInfoSlicer';
+import { useDrop } from 'react-dnd';
+import { dataAPI } from '../utils/api';
 
-export default function BurgerConstructor(props) {
+
+export default function BurgerConstructor() {
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = React.useState(false);
-  const bunData = props.data.find((i) => i.type === 'bun');
-  const sauceData = props.data.filter((i) => i.type === 'sauce');
-  const mainData = props.data.filter((i) => i.type === 'main');
-  const totalPrice =
-    props.data.map((i) => i.price).reduce((acc, curr) => acc + curr) +
-    bunData.price;
-  const onItemClick = () => setShowModal(true);
+  const [totalPrice, setTotalPrice] = React.useState(0);
+  const { bun, topping } = useSelector(state => state.chosenIngredients);
+
+  useMemo(() => {
+    setTotalPrice([bun, bun, ...topping].map((i) => i.price).reduce((acc, curr) => acc + curr) || 0);
+  }, [bun, topping]);
+
+  const [getOrderInfo, { data, isSuccess }] = dataAPI.usePostOrderInfoMutation();
+  useEffect(() => {
+    isSuccess && dispatch(setOrderInfo({data, isSuccess})) && setShowModal(true);
+  }, [isSuccess]);
+  const onOrderBtnClick = () => { getOrderInfo([bun, ...topping]) }
+
+  const moveIngredient = useCallback((dragIndex, hoverIndex) => {
+    dispatch(changeIngredientPosition({prevIndex: dragIndex, newIndex: hoverIndex}))
+  }, []);
+
+  const renderIngredient = useCallback((item, index, moveIngredient) => {
+    return (
+      <ChosenIngredient key={item.key} 
+        data={item}  
+        index={index}
+        moveIngredient={moveIngredient}
+      />
+    )
+  }, []);
+
+  const [{ getItem }, dropRef] = useDrop({
+    accept: 'newIngredient',
+    drop(item) {
+      dispatch(addIngredient(item));
+    },
+    collect: (monitor) => ({
+      getItem: monitor.getItem(),
+    })
+  });
 
   const {
+    constructor,
     choosenIngredientList,
     burgerTopping,
-    toppingItem,
     submitSection,
     toppingTotalPrice,
   } = burgerConstructorStyles;
 
   return (
     <section>
-      <ol className={choosenIngredientList}>
-        <li className='ml-8 mb-4'>
-          <ConstructorElement
-            type='top'
-            isLocked={true}
-            text={bunData.name}
-            price={bunData.price}
-            thumbnail={bunData.image}
-          />
-        </li>
-        <ol className={burgerTopping}>
-          {[sauceData, mainData].map((arr) => {
-            return arr.map((item) => {
-              return (
-                <li key={item._id} className={`${toppingItem} mb-4 mr-2`}>
-                  <DragIcon type='primary' />
-                  <ConstructorElement
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                  />
-                </li>
-              );
-            });
-          })}
+      <section ref={dropRef} className={getItem && !('index' in getItem) ? constructor : ''}>
+        <ol className={choosenIngredientList}>
+          <li className='ml-8 mb-4'>
+            <ConstructorElement
+              type='top'
+              isLocked={true}
+              text={`${bun.name || 'выберите булочку!'} (верх)`}
+              price={bun.price || 0}
+              thumbnail={`${bun.image || 'https://imgholder.ru/80x40&font=kelson'}`}
+            />
+          </li>
+          <ol className={burgerTopping}>
+            {topping.map((item, index) => renderIngredient(item, index, moveIngredient))}
+          </ol>
+          <li className='ml-8 mb-10'>
+            <ConstructorElement
+              type='bottom'
+              isLocked={true}
+              text={`${bun.name || 'выберите булочку!'} (низ)`}
+              price={bun.price || 0}
+              thumbnail={`${bun.image || 'https://imgholder.ru/80x40&font=kelson'}`}
+            />
+          </li>
         </ol>
-        <li className='ml-8 mb-10'>
-          <ConstructorElement
-            type='bottom'
-            isLocked={true}
-            text={bunData.name}
-            price={bunData.price}
-            thumbnail={bunData.image}
-          />
-        </li>
-      </ol>
+      </section>
       <section className={submitSection}>
         <p className={toppingTotalPrice}>
           <span className='text text_type_digits-default mr-2'>
@@ -78,20 +99,16 @@ export default function BurgerConstructor(props) {
           htmlType='button'
           type='primary'
           size='medium'
-          onClick={onItemClick}
+          onClick={onOrderBtnClick}
         >
           Оформить заказ
         </Button>
       </section>
       {showModal && (
-        <Modal setVisible={setShowModal}>
+        <Modal setVisible={setShowModal} >
           <ModalOrderDetails />
         </Modal>
       )}
     </section>
   );
 }
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(dataPropTypes).isRequired,
-};

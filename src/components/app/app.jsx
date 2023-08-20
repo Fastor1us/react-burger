@@ -1,44 +1,37 @@
-import React from 'react';
-
+import React, { useEffect } from 'react';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-
 import appStyles from './app.module.css';
 import '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch } from 'react-redux';
+import { setAvailableIngredients } from '../../store/slicers/availableIngredientsSlicer';
+import { dataAPI } from '../utils/api';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import chosenIngredientsData from '../utils/chosenIngredientsData';
-
-const API_URL = 'https://norma.nomoreparties.space/api/ingredients';
 
 export default function App() {
-  const [data, setData] = React.useState();
-
-  React.useEffect(() => {
-    fetch(API_URL)
-      .then((res) => res.json())
-      .then((data) => setData(data))
-      .catch((err) => console.log(err));
-  }, []);
-
+  const dispatch = useDispatch();
+  const { data, isLoading, isError, isSuccess } = dataAPI.useFetchAllDataQuery();
+  useEffect(() => {
+    dispatch(setAvailableIngredients({data, isLoading, isError, isSuccess}));
+  }, [isLoading]);
+  
   return (
-    <>
-      {data?.success ? (
-        <div className={appStyles.page}>
-          <AppHeader />
-          <main className={appStyles.main}>
-            <h1
-              className={`${appStyles.mainTitle} text text_type_main-large mt-10 mb-5`}
-            >
-              Соберите бургер
-            </h1>
-            <section className={appStyles.mainContainer}>
-              <BurgerIngredients data={data.data} />
-              <BurgerConstructor data={chosenIngredientsData} />
-            </section>
-          </main>
-        </div>
-      ) : <h1>При загрузке данных возникла ошибка!</h1>}
-    </>
+    <div className={appStyles.page}>
+      <AppHeader />
+      <main className={appStyles.main}>
+        <h1 className={`${appStyles.mainTitle} text text_type_main-large mt-10 mb-5`}>
+          Соберите бургер
+        </h1>
+        <DndProvider backend={HTML5Backend}>
+          <section className={appStyles.mainContainer}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </section>
+        </DndProvider>
+      </main>
+    </div>
   );
 }
