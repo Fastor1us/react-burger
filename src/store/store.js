@@ -1,23 +1,26 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-import { dataAPI } from '../components/utils/api';
+import { burgerAPI } from '../utils/burger-api';
 
 import availableIngredientsSlicer from './slicers/availableIngredientsSlicer';
 import chosenIngredientsSlicer from './slicers/chosenIngredientsSlicer';
 import orderInfoSlicer from './slicers/orderInfoSlicer';
 import activeTabSlicer from './slicers/activeTabSlicer';
+import userSlicer from './slicers/userSlicer';
 
 const rootReducer = combineReducers({
   availableIngredients: availableIngredientsSlicer,
   chosenIngredients: chosenIngredientsSlicer,
   orderInfo: orderInfoSlicer,
   activeTab: activeTabSlicer,
-  [dataAPI.reducerPath]: dataAPI.reducer,
+  userAccData: userSlicer,
+  [burgerAPI.reducerPath]: burgerAPI.reducer,
 });
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(dataAPI.middleware)
+  middleware: getDefaultMiddleware => 
+    getDefaultMiddleware().concat(burgerAPI.middleware)
 });
 
 export default store;

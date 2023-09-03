@@ -1,68 +1,78 @@
-import React from 'react';
-import { dataPropTypes } from '../../utils/prop-types';
-import modalIngredientStyles from './modal-ingredient-details.module.css';
+import React, { useEffect, useState } from 'react';
+import styles from './modal-ingredient-details.module.css';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-export default function ModalIngredientDetails(props) {
+
+export default function ModalIngredientDetails() {
+  const { id } = useParams();
+  const data = useSelector(state => state.availableIngredients.data);
+  const [ingredientData, setIngredientData] = useState(null);
+
+  useEffect(() => {
+    setIngredientData(data.find((item) => {
+      return item._id === id;
+    }));
+  }, [data]);
+
   return (
-    <>
+    <>{ingredientData && (<>
       <img
-        src={props.image}
-        alt={props.name}
-        className={modalIngredientStyles.ingredientImage}
+        src={ingredientData.image}
+        alt={ingredientData.name}
+        className={styles.ingredientImage}
       />
-      <h3 className='text text_type_main-medium mt-4'>{props.name}</h3>
-      <ol className={modalIngredientStyles.modalList}>
-        <li className={modalIngredientStyles.ingredientListProperties}>
+      <h3 className='text text_type_main-medium mt-4'>{ingredientData.name}</h3>
+      <ol className={styles.modalList}>
+        <li className={styles.ingredientListProperties}>
           <p
-            className={`${modalIngredientStyles.ingredientProperties} text text_type_main-small`}
+            className={`${styles.ingredientProperties} text text_type_main-small`}
           >
             Калории, ккал
           </p>
           <p
-            className={`${modalIngredientStyles.ingredientProperties} text text_type_digits-default`}
+            className={`${styles.ingredientProperties} text text_type_digits-default`}
           >
-            {props.calories}
+            {ingredientData.calories}
           </p>
         </li>
-        <li className={modalIngredientStyles.ingredientListProperties}>
+        <li className={styles.ingredientListProperties}>
           <p
-            className={`${modalIngredientStyles.ingredientProperties} text text_type_main-small`}
+            className={`${styles.ingredientProperties} text text_type_main-small`}
           >
             Белки, г
           </p>
           <p
-            className={`${modalIngredientStyles.ingredientProperties} text text_type_digits-default`}
+            className={`${styles.ingredientProperties} text text_type_digits-default`}
           >
-            {props.proteins}
+            {ingredientData.proteins}
           </p>
         </li>
-        <li className={modalIngredientStyles.ingredientListProperties}>
+        <li className={styles.ingredientListProperties}>
           <p
-            className={`${modalIngredientStyles.ingredientProperties} text text_type_main-small`}
+            className={`${styles.ingredientProperties} text text_type_main-small`}
           >
             Жиры, г
           </p>
           <p
-            className={`${modalIngredientStyles.ingredientProperties} text text_type_digits-default`}
+            className={`${styles.ingredientProperties} text text_type_digits-default`}
           >
-            {props.fat}
+            {ingredientData.fat}
           </p>
         </li>
-        <li className={modalIngredientStyles.ingredientListProperties}>
+        <li className={styles.ingredientListProperties}>
           <p
-            className={`${modalIngredientStyles.ingredientProperties} text text_type_main-small`}
+            className={`${styles.ingredientProperties} text text_type_main-small`}
           >
             Углеводы, г
           </p>
           <p
-            className={`${modalIngredientStyles.ingredientProperties} text text_type_digits-default`}
+            className={`${styles.ingredientProperties} text text_type_digits-default`}
           >
-            {props.carbohydrates}
+            {ingredientData.carbohydrates}
           </p>
         </li>
       </ol>
-    </>
+    </>)}</>
   );
 }
-
-ModalIngredientDetails.propTypes = dataPropTypes.isRequired;

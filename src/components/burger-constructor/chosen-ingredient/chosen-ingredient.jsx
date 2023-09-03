@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
-import ChosenIngredientStyles from './chosen-ingredient.module.css'
+import styles from './chosen-ingredient.module.css'
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { removeIngredient } from '../../../store/slicers/chosenIngredientsSlicer';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { dataPropTypes } from '../../utils/prop-types';
+import { dataPropTypes } from '../../../utils/prop-types';
 import { useDrop, useDrag } from 'react-dnd';
 
 
@@ -50,7 +50,7 @@ export default function ChosenIngredient(props) {
   
   return (
     <li style={{opacity}} ref={ref}
-        className={`${ChosenIngredientStyles.toppingItem} mb-4 mr-2`}
+        className={`${styles.toppingItem} mb-4 mr-2`}
     >
       <DragIcon type='primary' />
       <ConstructorElement

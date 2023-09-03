@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo }  from 'react';
-import burgerConstructorStyles from './burger-constructor.module.css';
+import styles from './burger-constructor.module.css';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import ModalOrderDetails from '../modal/modal-order-details/modal-order-details';
@@ -10,11 +10,13 @@ import { changeIngredientPosition } from '../../store/slicers/chosenIngredientsS
 import { addIngredient } from '../../store/slicers/chosenIngredientsSlicer';
 import { setOrderInfo } from '../../store/slicers/orderInfoSlicer';
 import { useDrop } from 'react-dnd';
-import { dataAPI } from '../utils/api';
+import { burgerAPI } from '../../utils/burger-api';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function BurgerConstructor() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showModal, setShowModal] = React.useState(false);
   const [totalPrice, setTotalPrice] = React.useState(0);
   const { bun, topping } = useSelector(state => state.chosenIngredients);
@@ -23,11 +25,15 @@ export default function BurgerConstructor() {
     setTotalPrice([bun, bun, ...topping].map((i) => i.price).reduce((acc, curr) => acc + curr) || 0);
   }, [bun, topping]);
 
-  const [getOrderInfo, { data, isSuccess }] = dataAPI.usePostOrderInfoMutation();
+  const [getOrderInfo, { data, isLoading, isSuccess }] = burgerAPI.endpoints.postOrderInfo.useMutation();
   useEffect(() => {
-    isSuccess && dispatch(setOrderInfo({data, isSuccess})) && setShowModal(true);
+    isSuccess && dispatch(setOrderInfo({data, isLoading, isSuccess})) && setShowModal(true);
   }, [isSuccess]);
-  const onOrderBtnClick = () => { getOrderInfo([bun, ...topping]) }
+
+  const onOrderBtnClick = () => {
+    (localStorage.getItem('accessToken') !== null &&
+    getOrderInfo([bun, ...topping])) || navigate('/login')
+  };
 
   const moveIngredient = useCallback((dragIndex, hoverIndex) => {
     dispatch(changeIngredientPosition({prevIndex: dragIndex, newIndex: hoverIndex}))
@@ -59,7 +65,7 @@ export default function BurgerConstructor() {
     burgerTopping,
     submitSection,
     toppingTotalPrice,
-  } = burgerConstructorStyles;
+  } = styles;
 
   return (
     <section>
@@ -100,6 +106,7 @@ export default function BurgerConstructor() {
           type='primary'
           size='medium'
           onClick={onOrderBtnClick}
+          disabled={isLoading}
         >
           Оформить заказ
         </Button>

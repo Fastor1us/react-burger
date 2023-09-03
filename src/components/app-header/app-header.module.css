@@ -36,6 +36,11 @@
   align-items: center;
   color: white;
   text-decoration: none;
+  opacity: .5;
+}
+
+.NavLinkActive {
+  opacity: 1;
 }
 
 .menuLogo {

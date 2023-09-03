@@ -1,6 +1,6 @@
 import React from 'react';
 import checkMarkImage from './../../../images/check-mark-image.png';
-import modalOrderStyles from './modal-order-details.module.css';
+import styles from './modal-order-details.module.css';
 import { useSelector } from 'react-redux';
 
 
@@ -9,7 +9,7 @@ export default function ModalOrderDetails() {
 
   return (<>
     {orderInfo?.success ? (
-      <section className={modalOrderStyles.orderCard}>
+      <section className={styles.orderCard}>
         <h3 className='text text_type_digits-large'>
           {orderInfo.order.number}
         </h3>

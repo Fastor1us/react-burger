@@ -1,17 +1,20 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import modalStyles from './modal.module.css';
+import styles from './modal.module.css';
 import ModalOverlay from './modal-overlay/modal-overlay';
 import closeBtnPng from '../../images/close-btn.png';
+import { useNavigate } from 'react-router-dom';
 
 export default function Modal(props) {
   const modalRoot = document.querySelector('#modal');
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     function escClickHandler(e) {
       if (e.key === 'Escape') {
-        props.setVisible(false);
+        console.log(props);
+        props.setVisible ? props.setVisible(false) : navigate(-1);
       }
     }
     document.addEventListener('keydown', escClickHandler);
@@ -22,17 +25,17 @@ export default function Modal(props) {
 
   return createPortal(<>
       <ModalOverlay setVisible={props.setVisible}/>
-      <section className={modalStyles.modalWindow}>
-        <section className={modalStyles.modalHeader}>
+      <section className={styles.modalWindow}>
+        <section className={styles.modalHeader}>
           <h2 className='text text_type_main-large'>{props.title || ''}</h2>
           <div
-            className={modalStyles.modalCloseBtn}
+            className={styles.modalCloseBtn}
             onClick={() => {
-              props.setVisible(false);
+              props.setVisible ? props.setVisible(false) : navigate(-1); 
             }}
           >
             <img
-              className={modalStyles.modalCloseBtnImage}
+              className={styles.modalCloseBtnImage}
               src={closeBtnPng}
               alt='close-button'
             />

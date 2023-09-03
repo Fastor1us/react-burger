@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {};
 
 const activeTabSlicer = createSlice({
-  name: 'data',
+  name: 'activeTab',
   initialState,
   reducers: {
     setTabState(state, action) {
