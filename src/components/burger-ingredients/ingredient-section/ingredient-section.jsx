@@ -45,22 +45,20 @@ export default function IngredientSection(props) {
       return card;
     });
   return (
-    <>
-      <section id={props.children}>
-        <h2 className='text text_type_main-medium pt-10 mb-6'>
-          {props.children}
-        </h2>
-        <ol className={styles.sectionList}>
-          {arrCards.map((card) => {
-            return (
-              <li className='mt-8' key={card._id}>
-                <IngredientItem {...card} />
-              </li>
-            );
-          })}
-        </ol>
-      </section>
-    </>
+    <section id={props.children}>
+      <h2 className='text text_type_main-medium pt-10 mb-6'>
+        {props.children}
+      </h2>
+      <ol className={styles.sectionList}>
+        {arrCards.map((card) => {
+          return (
+            <li className='mt-8' key={card._id}>
+              <IngredientItem {...card} />
+            </li>
+          );
+        })}
+      </ol>
+    </section>
   );
 }
 
