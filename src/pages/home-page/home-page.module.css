@@ -1,0 +1,8 @@
+.mainTitle {
+  width: 100%;
+}
+
+.mainContainer {
+  display: flex;
+  gap: 40px;
+}

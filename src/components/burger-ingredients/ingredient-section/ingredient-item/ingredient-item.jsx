@@ -1,18 +1,16 @@
 import React from 'react';
-import ingredientItemStyles from './ingredient-item.module.css';
+import styles from './ingredient-item.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from '../../../modal/modal';
-import { dataPropTypes } from '../../../utils/prop-types';
-import ModalIngredientDetails from '../../../modal/modal-ingredient-details/modal-ingredient-details';
+import { dataPropTypes } from '../../../../utils/prop-types';
 import { useSelector } from 'react-redux';
 import { useDrag } from 'react-dnd';
+import { Link, useLocation } from 'react-router-dom';
 
 
 export default function IngredientItem(props) {
-  const [showModal, setShowModal] = React.useState(false);
+  const location = useLocation();
 
   const { bun: chosenBun, topping: chosenIngredients } = useSelector(state => state.chosenIngredients);
-  const onItemClick = () => setShowModal(true);
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'newIngredient',
@@ -33,15 +31,16 @@ export default function IngredientItem(props) {
     });
   }
 
-  const { ingredientCard, ingredientDescription, ingredientAmount } = ingredientItemStyles;
+  const { ingredientCard, ingredientDescription, ingredientAmount } = styles;
   const opacity = isDragging ? 0.5 : 1;
 
   return (
-    <>
+    <Link key={props._id} to={`/ingredients/${props._id}`} 
+      state={{ background: location }} className={styles.link}
+    >
       <figure ref={dragRef} style={{opacity}}
         className={ingredientCard}
         name={props.name}
-        onClick={onItemClick}
       >
         <img src={props.image} alt={props.name} />
         <p className={ingredientDescription}>
@@ -57,12 +56,7 @@ export default function IngredientItem(props) {
           </div>) 
           : null}
       </figure>
-      {showModal && (
-        <Modal title='Детали ингредиента' setVisible={setShowModal}>
-          <ModalIngredientDetails {...props} />
-        </Modal>
-      )}
-    </>
+    </Link>
   );
 }
 

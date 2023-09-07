@@ -1,7 +1,7 @@
 import React, { useEffect} from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientSection from './ingredient-section/ingredient-section';
-import burgerIngredientsStyles from './burger-ingredients.module.css';
+import styles from './burger-ingredients.module.css';
 import { useSelector } from 'react-redux';
 
 
@@ -20,7 +20,7 @@ export default function BurgerIngredients() {
   }, [tabsStatus]);
 
   const { ingredientsMainBlock, ingredientsTab, ingredientsMenu } =
-    burgerIngredientsStyles;
+    styles;
 
   const onTabClick = (activeTab) => {
     setCurrentTab(activeTab);

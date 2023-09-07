@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo }  from 'react';
-import burgerConstructorStyles from './burger-constructor.module.css';
+import styles from './burger-constructor.module.css';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import ModalOrderDetails from '../modal/modal-order-details/modal-order-details';
@@ -7,15 +7,19 @@ import { useSelector } from 'react-redux';
 import ChosenIngredient from './chosen-ingredient/chosen-ingredient';
 import { useDispatch } from 'react-redux';
 import { changeIngredientPosition } from '../../store/slicers/chosenIngredientsSlicer';
+import { resetChosenIngredientStore } from '../../store/slicers/chosenIngredientsSlicer';
 import { addIngredient } from '../../store/slicers/chosenIngredientsSlicer';
 import { setOrderInfo } from '../../store/slicers/orderInfoSlicer';
 import { useDrop } from 'react-dnd';
-import { dataAPI } from '../utils/api';
+import { burgerAPI } from '../../utils/api/burger-api';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function BurgerConstructor() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showModal, setShowModal] = React.useState(false);
+  const [showLoadingModal, setShowLoadingModal] = React.useState(false);
   const [totalPrice, setTotalPrice] = React.useState(0);
   const { bun, topping } = useSelector(state => state.chosenIngredients);
 
@@ -23,11 +27,23 @@ export default function BurgerConstructor() {
     setTotalPrice([bun, bun, ...topping].map((i) => i.price).reduce((acc, curr) => acc + curr) || 0);
   }, [bun, topping]);
 
-  const [getOrderInfo, { data, isSuccess }] = dataAPI.usePostOrderInfoMutation();
+  const [getOrderInfo, { data, isLoading, isSuccess, isError }] = burgerAPI.endpoints.postOrderInfo.useMutation();
   useEffect(() => {
-    isSuccess && dispatch(setOrderInfo({data, isSuccess})) && setShowModal(true);
+    if (isSuccess && showLoadingModal && !isError) {
+      dispatch(setOrderInfo({data, isLoading, isSuccess}));
+      dispatch(resetChosenIngredientStore());
+      setShowModal(true);
+    } 
   }, [isSuccess]);
-  const onOrderBtnClick = () => { getOrderInfo([bun, ...topping]) }
+
+  const onOrderBtnClick = () => {
+    if (localStorage.getItem('accessToken') !== null) {
+    setShowLoadingModal(true);
+    getOrderInfo([bun, ...topping]);
+    } else {
+      navigate('/login');
+    } 
+  };
 
   const moveIngredient = useCallback((dragIndex, hoverIndex) => {
     dispatch(changeIngredientPosition({prevIndex: dragIndex, newIndex: hoverIndex}))
@@ -59,7 +75,7 @@ export default function BurgerConstructor() {
     burgerTopping,
     submitSection,
     toppingTotalPrice,
-  } = burgerConstructorStyles;
+  } = styles;
 
   return (
     <section>
@@ -100,12 +116,19 @@ export default function BurgerConstructor() {
           type='primary'
           size='medium'
           onClick={onOrderBtnClick}
+          disabled={bun.price === 0 || (isLoading ? (isLoading && showLoadingModal) : false)}
         >
           Оформить заказ
         </Button>
       </section>
+      {isLoading && showLoadingModal && (
+        <Modal setVisible={setShowLoadingModal}>
+          <h1>{(isLoading && 'Идет оформление заказа...') ||
+          (isError && 'При оформлении заказа произошла ошибка')}</h1>
+        </Modal>
+      )}
       {showModal && (
-        <Modal setVisible={setShowModal} >
+        <Modal setVisible={setShowModal}>
           <ModalOrderDetails />
         </Modal>
       )}

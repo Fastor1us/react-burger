@@ -1,12 +1,12 @@
 import React, { useCallback} from 'react';
 import PropTypes from 'prop-types';
-import ingredientsSectionStyles from './ingredient-section.module.css';
+import styles from './ingredient-section.module.css';
 import IngredientItem from './ingredient-item/ingredient-item';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { setTabState } from '../../../store/slicers/activeTabSlicer';
 
-
+ 
 export default function IngredientSection(props) {
   const dispatch = useDispatch();
   const data = useSelector(store => store.availableIngredients.data);
@@ -45,22 +45,20 @@ export default function IngredientSection(props) {
       return card;
     });
   return (
-    <>
-      <section id={props.children}>
-        <h2 className='text text_type_main-medium pt-10 mb-6'>
-          {props.children}
-        </h2>
-        <ol className={ingredientsSectionStyles.sectionList}>
-          {arrCards.map((card) => {
-            return (
-              <li className='mt-8' key={card._id}>
-                <IngredientItem {...card} />
-              </li>
-            );
-          })}
-        </ol>
-      </section>
-    </>
+    <section id={props.children}>
+      <h2 className='text text_type_main-medium pt-10 mb-6'>
+        {props.children}
+      </h2>
+      <ol className={styles.sectionList}>
+        {arrCards.map((card) => {
+          return (
+            <li className='mt-8' key={card._id}>
+              <IngredientItem {...card} />
+            </li>
+          );
+        })}
+      </ol>
+    </section>
   );
 }
 

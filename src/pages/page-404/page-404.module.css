@@ -1,0 +1,20 @@
+.backBtn {
+  width: 160px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid white;
+  border-radius: 10px;
+  font-size: 24px;
+}
+
+.title {
+  margin-top: 140px;
+  font-size: 104px;
+}
+
+.description {
+  font-size: 36px;
+  margin-bottom: 84px;
+}

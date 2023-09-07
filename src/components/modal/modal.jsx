@@ -1,19 +1,21 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import modalStyles from './modal.module.css';
+import styles from './modal.module.css';
 import ModalOverlay from './modal-overlay/modal-overlay';
-import closeBtnPng from '../../images/close-btn.png';
+import { useNavigate } from 'react-router-dom';
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 export default function Modal(props) {
   const modalRoot = document.querySelector('#modal');
+  const navigate = useNavigate();
+
+  const closePopup = () => {
+    props.setVisible ? props.setVisible(false) : navigate(-1);
+  }
 
   React.useEffect(() => {
-    function escClickHandler(e) {
-      if (e.key === 'Escape') {
-        props.setVisible(false);
-      }
-    }
+    function escClickHandler(e) { e.key === 'Escape' && closePopup() }
     document.addEventListener('keydown', escClickHandler);
     return () => {
       document.removeEventListener('keydown', escClickHandler);
@@ -21,21 +23,12 @@ export default function Modal(props) {
   }, []);
 
   return createPortal(<>
-      <ModalOverlay setVisible={props.setVisible}/>
-      <section className={modalStyles.modalWindow}>
-        <section className={modalStyles.modalHeader}>
+      <ModalOverlay closePopup={closePopup}/>
+      <section className={styles.modalWindow}>
+        <section className={styles.modalHeader}>
           <h2 className='text text_type_main-large'>{props.title || ''}</h2>
-          <div
-            className={modalStyles.modalCloseBtn}
-            onClick={() => {
-              props.setVisible(false);
-            }}
-          >
-            <img
-              className={modalStyles.modalCloseBtnImage}
-              src={closeBtnPng}
-              alt='close-button'
-            />
+          <div className={styles.modalCloseBtn} onClick={closePopup}>
+            <CloseIcon type='primary'/>
           </div>
         </section>
         {props.children}
