@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+
+import { useForm } from '../../utils/hooks/use-form';
 
 import { FormInput, SubmitButton } from '../../components/wrapped-form-elements/wrapped-form-elements';
 import FormErrorInterface from '../../components/form-error-interface/form-error-interface';
@@ -13,16 +15,13 @@ import { loginInToUserAccThunk } from '../../store/thunks/userThunk';
 export default function LoginPage () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('fastorius@bk.ru');
-  const [password, setPassword] = useState('zxc123');
 
-  const onChange = (e, setter) => {
-    setter(e.target.value);
-  }
+  const {values, handleChange} = useForm({email: 'fastorius@bk.ru', password: 'zxc123'});
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginInToUserAccThunk({ email, password }, (to) => navigate(to)));
+    dispatch(loginInToUserAccThunk({ email: values.email, password: values.password }, 
+      (to) => navigate(to)));
   }
 
   return (
@@ -33,14 +32,14 @@ export default function LoginPage () {
       <form onSubmit={onSubmit} className={styles.form}>
         <FormInput
           type = 'email'
-          onChange={(e) => onChange(e, setEmail)}
-          value={email}
+          onChange={handleChange}
+          value={values.email}
           extraClass="mb-6"
         />
         <FormInput
           type = 'password'
-          onChange={(e) => onChange(e, setPassword)}
-          value={password}
+          onChange={handleChange}
+          value={values.password}
           extraClass="mb-6"
         />
         <FormErrorInterface />

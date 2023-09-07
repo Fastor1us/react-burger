@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-import { burgerAPI } from '../utils/burger-api';
+import { burgerAPI } from '../utils/api/burger-api';
 
 import availableIngredientsSlicer from './slicers/availableIngredientsSlicer';
 import chosenIngredientsSlicer from './slicers/chosenIngredientsSlicer';

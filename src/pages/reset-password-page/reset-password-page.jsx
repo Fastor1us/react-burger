@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import styles from './reset-password-page.module.css'
+import { useForm } from '../../utils/hooks/use-form';
 
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FormInput, SubmitButton } from '../../components/wrapped-form-elements/wrapped-form-elements';
 import FormErrorInterface from '../../components/form-error-interface/form-error-interface';
+
+import styles from './reset-password-page.module.css'
 
 import { passwordResetThunk } from '../../store/thunks/userThunk';
 
@@ -14,16 +16,12 @@ export default function ResetPasswordPage () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const [password, setPassword] = useState('');
-  const [codeFromEmail, setCodeFromEmail] = useState('');
-
-  const onChange = (e, setter) => {
-    setter(e.target.value);
-  }
+  const {values, handleChange} = useForm({password: '', codeFromEmail: ''});
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(passwordResetThunk({password, token: codeFromEmail}, (to) => navigate(to)));
+    dispatch(passwordResetThunk({password: values.password, token: values.codeFromEmail},
+      (to) => navigate(to)));
   }
 
   useEffect(() => {
@@ -39,15 +37,15 @@ export default function ResetPasswordPage () {
         <FormInput
           type = 'password'
           placeholder={'Введите новый пароль'}
-          onChange={(e) => onChange(e, setPassword)}
-          value={password}
+          onChange={handleChange}
+          value={values.password}
           extraClass="mb-6"
         />
         <FormInput
           type={'text'}
           placeholder={'Введите код из письма'}
-          onChange={(e) => onChange(e, setCodeFromEmail)}
-          value={codeFromEmail}
+          onChange={handleChange}
+          value={values.codeFromEmail}
           extraClass="mb-6"
         />
         <FormErrorInterface />

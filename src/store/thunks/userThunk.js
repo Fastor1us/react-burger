@@ -13,7 +13,7 @@ import { registerNewUserApi,
          recoveryEmailSendApi,
          passwordResetApi,
          patchUserDataApi
- } from '../../utils/user-api';
+ } from '../../utils/api/user-api';
 
 
 export function registerNewUserThunk({name, email, password}, goToPage) {

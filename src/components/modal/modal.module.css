@@ -10,7 +10,6 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* z-index: 999; */
 }
 
 .modalHeader {
@@ -23,12 +22,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* color: white; */
 }
 
 .modalCloseBtn {
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,9 +34,4 @@
 
 .modalCloseBtn:hover {
   cursor: pointer;
-}
-
-.modalCloseBtnImage {
-  width: 24px;
-  height: 24px;
 }

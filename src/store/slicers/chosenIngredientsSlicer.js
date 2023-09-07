@@ -27,12 +27,16 @@ const chosenIngredientsSlicer = createSlice({
     changeIngredientPosition(state, action) {
       const elemToMove = state.topping.splice(action.payload.prevIndex, 1);
       state.topping.splice(action.payload.newIndex, 0, elemToMove[0]);
+    },
+    resetChosenIngredientStore() {
+      return { bun: { price: 0 }, topping: [] }
     }
   },
 });
 
 export const { addIngredient, 
                removeIngredient, 
-               changeIngredientPosition } = chosenIngredientsSlicer.actions;
+               changeIngredientPosition,
+               resetChosenIngredientStore } = chosenIngredientsSlicer.actions;
 
 export default chosenIngredientsSlicer.reducer;

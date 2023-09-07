@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
+
+import { useForm } from '../../utils/hooks/use-form';
+
 import { FormInput, ActionButton, SubmitButton } from '../../components/wrapped-form-elements/wrapped-form-elements';
 import FormErrorInterface from '../../components/form-error-interface/form-error-interface';
 
@@ -13,12 +16,12 @@ export default function ProfilePage () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isInitDataChanged, setIsInitDataChanged] = useState(false);
-  const [userStateData, setUserStateData] = useState({name:'', email: '', password: ''});
+  const {values, setValues, handleChange} = useForm({name:'', email: '', password: ''});
   const userReduxData = useSelector(state => state.userAccData.user);
 
   useEffect(() => {
-    (userReduxData.name || userReduxData.email) && setUserStateData({
-      ...userStateData,
+    (userReduxData.name || userReduxData.email) && setValues({
+      ...values,
       name: userReduxData.name,
       email: userReduxData.email
     });
@@ -26,25 +29,18 @@ export default function ProfilePage () {
 
   useEffect(() => {
     setIsInitDataChanged(
-      userStateData.password.length !== 0 ||
-      userStateData.name !== userReduxData.name ||
-      userStateData.email !== userReduxData.email
+      values.password.length !== 0 ||
+      values.name !== userReduxData.name ||
+      values.email !== userReduxData.email
     )
-  }, [userStateData, userReduxData]);
+  }, [values, userReduxData]);
   
   const onLogoutBtnClick = () => {
     dispatch(logoutFromUserAccThunk((to) => navigate(to)));
   }
 
-  const onChange = (e) => {
-    setUserStateData({
-      ...userStateData,
-      [e.target.name]: e.target.value
-    });
-  }
-
   const onCancelClick = () => {
-    setUserStateData({
+    setValues({
       password: '',
       name: userReduxData.name,
       email: userReduxData.email
@@ -55,8 +51,8 @@ export default function ProfilePage () {
     e.preventDefault();
     const newUserData = {}
     for (let key in userReduxData) {
-      if (userStateData[key].length > 0 && userReduxData[key] !== userStateData[key]) {
-        newUserData[key] = userStateData[key];
+      if (values[key].length > 0 && userReduxData[key] !== values[key]) {
+        newUserData[key] = values[key];
       }
     }
     Object.keys(newUserData).length > 0 &&
@@ -98,25 +94,25 @@ export default function ProfilePage () {
         <FormInput
           type='text'
           name='name'
-          onChange={(e) => onChange(e)}
+          onChange={handleChange}
           icon={'EditIcon'}
-          value={userStateData.name}
+          value={values.name}
           placeholder={'Имя'}
           extraClass="mb-2"
         />
         <FormInput
           type='email'
           name='email'
-          onChange={(e) => onChange(e)}
-          value={userStateData.email}
+          onChange={handleChange}
+          value={values.email}
           icon={'EditIcon'}
           extraClass="mb-2"
         />
         <FormInput
           type='password'
           name='password'
-          onChange={(e) => onChange(e)}
-          value={userStateData.password}
+          onChange={handleChange}
+          value={values.password}
           icon={'EditIcon'}
           extraClass="mb-4"
         />

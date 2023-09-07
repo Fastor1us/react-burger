@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+
+import { useForm } from '../../utils/hooks/use-form';
+
 import { FormInput, SubmitButton } from '../../components/wrapped-form-elements/wrapped-form-elements';
 import FormErrorInterface from '../../components/form-error-interface/form-error-interface';
 
@@ -12,17 +15,13 @@ import { registerNewUserThunk } from '../../store/thunks/userThunk';
 export default function RegisterPage () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [name, setName] = useState('OlegK');
-  const [email, setEmail] = useState('fastorius@bk.ru');
-  const [password, setPassword] = useState('qwerty');
 
-  const onChange = (e, setter) => {
-    setter(e.target.value);
-  }
+  const {values, handleChange} = useForm({name: 'OlegK',email: 'fastorius@bk.ru', password: 'qwerty'});
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerNewUserThunk({ email, password, name }, (to) => navigate(to)));
+    dispatch(registerNewUserThunk({ email: values.email, password: values.password, name: values.name },
+      (to) => navigate(to)));
   }
 
   return (
@@ -32,23 +31,25 @@ export default function RegisterPage () {
       </h2>
       <form onSubmit={onSubmit} className={styles.form}>
         <FormInput
-          type = 'text'
-          onChange={(e) => onChange(e, setName)}
-          value={name}
-          name={'login'}
+          type='text'
+          name={'name'}
+          onChange={handleChange}
+          value={values.name}
           placeholder="Имя"
           extraClass="mb-6"
         />
         <FormInput
-          type = 'email'
-          onChange={(e) => onChange(e, setEmail)}
-          value={email}
+          type='email'
+          name='email'
+          onChange={handleChange}
+          value={values.email}
           extraClass="mb-6"
         />
         <FormInput
-          type = 'password'
-          onChange={(e) => onChange(e, setPassword)}
-          value={password}
+          type='password'
+          name='password'
+          onChange={handleChange}
+          value={values.password}
           extraClass="mb-6"
         />
         <FormErrorInterface />

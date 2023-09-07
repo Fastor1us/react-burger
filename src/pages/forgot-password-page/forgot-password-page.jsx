@@ -14,10 +14,6 @@ export default function ForgotPasswordPage () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState('fastorius@bk.ru');
-
-  const onChange = (e) => {
-    setEmail(e.target.value);
-  }
   
   const onSubmit = (e) => {
     e.preventDefault();
@@ -33,7 +29,7 @@ export default function ForgotPasswordPage () {
       <form onSubmit={onSubmit} className={styles.form}>
         <FormInput
           type = 'email'
-          onChange={onChange}
+          onChange={e => setEmail(e.target.value)}
           value={email}
           isIcon={false}
           extraClass="mb-6"

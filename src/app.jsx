@@ -15,7 +15,7 @@ import Page404 from './pages/page-404/page-404';
 import { OnlyAuth, OnlyUnAuth } from './components/protected-route';
 
 import { setAvailableIngredients } from './store/slicers/availableIngredientsSlicer';
-import { burgerAPI } from './utils/burger-api';
+import { burgerAPI } from './utils/api/burger-api';
 import { getUserInfoThunk } from './store/thunks/userThunk';
 
 import Modal from './components/modal/modal';
