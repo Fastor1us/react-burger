@@ -2,8 +2,12 @@ import React from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+type TProps = {
+  onlyUnAuth?: boolean;
+  component: JSX.Element;
+}
 
-const Protected = ({ onlyUnAuth = false, component }) => {
+const Protected: React.FC<TProps> = ({ onlyUnAuth = false, component }) => {
   const location = useLocation();
   const isAuth = localStorage.getItem('accessToken');
 
@@ -22,7 +26,7 @@ const Protected = ({ onlyUnAuth = false, component }) => {
 
 export const OnlyAuth = Protected;
 
-export const OnlyUnAuth = ({ component }) => (
+export const OnlyUnAuth: React.FC<Omit<TProps, 'onlyUnAuth'>> = ({ component }) => (
   <Protected onlyUnAuth={true} component={component} />
 );
 

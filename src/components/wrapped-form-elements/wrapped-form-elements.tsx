@@ -1,18 +1,29 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
-// import { forwardRef } from 'react';
-import PropTypes from 'prop-types';
+import { TRootState } from '../../store/store';
+
+import {
+  Button,
+  EmailInput,
+  PasswordInput,
+  Input
+} from '@ya.praktikum/react-developer-burger-ui-components';
 
 
-import { Button,
-         EmailInput,
-         PasswordInput,
-         Input
-       } from '@ya.praktikum/react-developer-burger-ui-components';
-
+type WrappedComponentProps = {
+  children?: React.ReactNode;
+  disabled?: boolean;
+  [key: string]: any;
+};
+// HOC
+const WrapperFormElement = (Component: React.ComponentType<WrappedComponentProps>) => {
+  return function WrappedComponent(props: WrappedComponentProps) {
+    const requestPending = useSelector((store: TRootState) => store.userAccData.request);
+    return <Component {...props} disabled={requestPending} />
+  }
+}
 
 export const SubmitButton = WrapperFormElement(
-  ({children, ...props}) => {
+  ({ children, ...props }) => {
     return (
       <Button htmlType='submit' type='primary' {...props}>
         {children}
@@ -22,7 +33,7 @@ export const SubmitButton = WrapperFormElement(
 );
 
 export const ActionButton = WrapperFormElement(
-  ({children, ...props}) => {
+  ({ children, ...props }) => {
     return (
       <Button htmlType='button' type='primary' {...props}>
         {children}
@@ -32,28 +43,34 @@ export const ActionButton = WrapperFormElement(
 );
 
 export const FormInput = WrapperFormElement(
-  ({...props}) => {
+  ({ ...props }) => {
     switch (props.type) {
       case 'email':
         return (
           <EmailInput
             name={'email'}
             placeholder='E-mail'
+            value={props.value}
+            onChange={props.onChange}
             {...props}
           />
         )
       case 'password':
-        
+
         return (
           <PasswordInput
             name={'password'}
             icon={props.icon || 'ShowIcon'}
+            value={props.value}
+            onChange={props.onChange}
             {...props}
           />
         )
       case 'text':
         return (
           <Input
+            value={props.value}
+            onChange={props.onChange}
             {...props}
           />
         )
@@ -62,16 +79,3 @@ export const FormInput = WrapperFormElement(
     }
   }
 );
-
-
-// HOC
-function WrapperFormElement (Component) {
-  return function WrappedComponent(props) {
-    const requestPending = useSelector(store => store.userAccData.request);
-    return <Component {...props} disabled={requestPending} />
-  }
-}
-
-WrapperFormElement.propTypes = {
-  Component: PropTypes.element.isRequired,
-}

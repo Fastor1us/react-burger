@@ -5,7 +5,9 @@ import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-comp
 import { removeIngredient } from '../../../store/slicers/chosenIngredientsSlicer';
 import { useDispatch } from 'react-redux';
 import { useDrop, useDrag } from 'react-dnd';
+import { Identifier } from 'dnd-core';
 import { TIngredientItem } from '../../../../interfaces/ingredient-item-type';
+
 
 type TProps = {
   index: number;
@@ -13,13 +15,17 @@ type TProps = {
   moveIngredient: (dragIndex: number, hoverIndex: number) => void
 }
 
-
-// const ChosenIngredient: FC<TProps> = (props) => {
-// export default ChosenIngredient;
 export default function ChosenIngredient(props: TProps) {
   const dispatch = useDispatch();
   const ref = useRef(null);
-  const [, dropRef] = useDrop({
+  const [, dropRef] = useDrop<
+    {
+      ingredient: TIngredientItem;
+      index: number;
+    },
+    unknown,
+    { handlerId: Identifier | null }
+  >({
     accept: 'ingredient',
     hover(item: any, monitor: any) {
       if (!ref.current) { return }

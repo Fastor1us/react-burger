@@ -1,10 +1,10 @@
 import { Mutex } from 'async-mutex';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { BaseQueryApi, FetchArgs, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const API_URL = 'https://norma.nomoreparties.space/api';
 
 const mutex = new Mutex();
-const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
+const baseQueryWithReauth = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions: Record<string, any>) => {
   await mutex.waitForUnlock();
   let result = await fetchBaseQuery({ baseUrl: API_URL })(args, api, extraOptions);
   if (result.error && result.error.status === 401) {
@@ -58,7 +58,7 @@ export const burgerAPI = createApi({
         body: JSON.stringify({
           'ingredients': arrOrderData,
         })
-      }),
+      }) as FetchArgs,
     }),
   })
 })
