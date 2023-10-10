@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../utils/hooks/hooks';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { FormInput, SubmitButton } from '../../components/wrapped-form-elements/wrapped-form-elements';
@@ -11,7 +11,7 @@ import { recoveryEmailSendThunk } from '../../store/thunks/userThunk';
 
 
 export default function ForgotPasswordPage() {
-  const dispatch: (dispatch: any) => void = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState('fastorius@bk.ru');
 

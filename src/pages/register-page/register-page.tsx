@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../utils/hooks/hooks';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useForm } from '../../utils/hooks/use-form';
@@ -13,7 +13,7 @@ import { registerNewUserThunk } from '../../store/thunks/userThunk';
 
 
 export default function RegisterPage() {
-  const dispatch: (dispatch: any) => void = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { values, handleChange } = useForm({ name: 'OlegK', email: 'fastorius@bk.ru', password: 'qwerty' });

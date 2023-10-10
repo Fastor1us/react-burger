@@ -1,11 +1,10 @@
 import checkMarkImage from './../../../images/check-mark-image.png';
-import styles from './modal-order-details.module.css';
-import { useSelector } from 'react-redux';
-import { TRootState } from '../../../store/store';
+import styles from './modal-new-order-details.module.css';
+import { useSelector } from '../../../utils/hooks/hooks';
 
 
-export default function ModalOrderDetails() {
-  const orderInfo = useSelector((store: TRootState) => store.orderInfo.data);
+export default function ModalNewOrderDetails() {
+  const orderInfo = useSelector(store => store.orderInfo.data);
 
   return (<>
     {orderInfo?.success ? (

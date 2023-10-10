@@ -1,9 +1,14 @@
+* {
+  --color-link-blue: #4C4CFF;
+  --color-grey: #2F2F37;
+  --color-grey-dark: #1C1C21;
+  --color-grey-light: #8585ad;
+}
+
 #root {
   display: flex;
   flex-direction: column;
   align-items: center;
-  
-  --color-link-blue: #4C4CFF;
 }
 
 a {
@@ -20,6 +25,7 @@ ol {
   padding: 0;
   margin: 0;
 }
+
 p {
   margin: 0;
 }

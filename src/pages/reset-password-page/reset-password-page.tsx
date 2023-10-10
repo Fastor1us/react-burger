@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../utils/hooks/hooks';
 
 import { useForm } from '../../utils/hooks/use-form';
 
@@ -13,7 +13,7 @@ import { passwordResetThunk } from '../../store/thunks/userThunk';
 
 
 export default function ResetPasswordPage() {
-  const dispatch: (dispatch: any) => void = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const { values, handleChange } = useForm({ password: '', codeFromEmail: '' });

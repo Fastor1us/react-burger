@@ -26,7 +26,7 @@ export default function AppHeader() {
               </NavLink>
             </li>
             <li className={menuItem}>
-              <NavLink to='/lenta-zakazov' className={
+              <NavLink to='/feed' className={
                 ({ isActive }) => isActive ? `${menuLink} ${NavLinkActive}` : menuLink
               }>
                 <ListIcon type='primary' />

@@ -17,10 +17,10 @@
 
 .ingredientsMenu::-webkit-scrollbar-track {
   border-radius: 2px;
-  background: #2f2f37;
+  background: var(--color-grey);
 }
 
 .ingredientsMenu::-webkit-scrollbar-thumb {
-  background-color: #8585ad;
+  background-color: var(--color-grey-light);
   border-radius: 2px;
 }

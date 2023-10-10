@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../utils/hooks/hooks';
 import { NavLink, useNavigate } from 'react-router-dom';
-
 import { useForm } from '../../utils/hooks/use-form';
 
 import { FormInput, ActionButton, SubmitButton } from '../../components/wrapped-form-elements/wrapped-form-elements';
@@ -9,17 +8,15 @@ import FormErrorInterface from '../../components/form-error-interface/form-error
 
 import styles from './profile-page.module.css';
 
-import { logoutFromUserAccThunk, patchUserDataThunk } from '../../store/thunks/userThunk';
-
-import { TRootState } from '../../store/store';
+import { patchUserDataThunk } from '../../store/thunks/userThunk';
 
 
 export default function ProfilePage() {
-  const dispatch: (dispatch: any) => void = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isInitDataChanged, setIsInitDataChanged] = useState(false);
   const { values, setValues, handleChange } = useForm({ name: '', email: '', password: '' });
-  const userReduxData = useSelector((store: TRootState) => store.userAccData.user);
+  const userReduxData = useSelector(store => store.userAccData.user);
 
   useEffect(() => {
     (userReduxData.name || userReduxData.email) && setValues({
@@ -36,10 +33,6 @@ export default function ProfilePage() {
       values.email !== userReduxData.email
     )
   }, [values, userReduxData]);
-
-  const onLogoutBtnClick = () => {
-    dispatch(logoutFromUserAccThunk((to: string) => navigate(to)));
-  }
 
   const onCancelClick = () => {
     setValues({
@@ -68,71 +61,46 @@ export default function ProfilePage() {
       ))
   }
 
-  const { navigation, NavLinkActive, menuLink, form, button, buttons } = styles;
+  const { form, button, buttons } = styles;
 
   return (
-    <section className={styles.container}>
-      <nav className={navigation}>
-        <ol>
-          <li className="text text_type_main-medium">
-            <NavLink to='/profile' className={
-              ({ isActive }) => isActive ? `${menuLink} ${NavLinkActive}` : menuLink
-            }>
-              Профиль
-            </NavLink>
-          </li>
-          <li className="text text_type_main-medium">
-            <NavLink to='/profile/orders' className={
-              ({ isActive }) => isActive ? `${menuLink} ${NavLinkActive}` : menuLink
-            }>
-              История заказов
-            </NavLink>
-          </li>
-          <li className="text text_type_main-medium">
-            <a onClick={onLogoutBtnClick} className={menuLink} style={{ cursor: 'pointer' }}>
-              Выход
-            </a>
-          </li>
-        </ol>
-      </nav>
-      <form onSubmit={onSubmit} className={form}>
-        <FormInput
-          type='text'
-          name='name'
-          onChange={handleChange}
-          icon={'EditIcon'}
-          value={values.name}
-          placeholder={'Имя'}
-          extraClass="mb-2"
-        />
-        <FormInput
-          type='email'
-          name='email'
-          onChange={handleChange}
-          value={values.email}
-          icon={'EditIcon'}
-          extraClass="mb-2"
-        />
-        <FormInput
-          type='password'
-          name='password'
-          onChange={handleChange}
-          value={values.password}
-          icon={'EditIcon'}
-          extraClass="mb-4"
-        />
-        <FormErrorInterface />
-        {isInitDataChanged && (
-          <div className={buttons}>
-            <ActionButton size="medium" extraClass={button} onClick={onCancelClick}>
-              Отменить
-            </ActionButton>
-            <SubmitButton size="medium" extraClass={button}>
-              Сохранить
-            </SubmitButton>
-          </div>
-        )}
-      </form>
-    </section>
+    <form onSubmit={onSubmit} className={form}>
+      <FormInput
+        type='text'
+        name='name'
+        onChange={handleChange}
+        icon={'EditIcon'}
+        value={values.name}
+        placeholder={'Имя'}
+        extraClass="mb-2"
+      />
+      <FormInput
+        type='email'
+        name='email'
+        onChange={handleChange}
+        value={values.email}
+        icon={'EditIcon'}
+        extraClass="mb-2"
+      />
+      <FormInput
+        type='password'
+        name='password'
+        onChange={handleChange}
+        value={values.password}
+        icon={'EditIcon'}
+        extraClass="mb-4"
+      />
+      <FormErrorInterface />
+      {isInitDataChanged && (
+        <div className={buttons}>
+          <ActionButton size="medium" extraClass={button} onClick={onCancelClick}>
+            Отменить
+          </ActionButton>
+          <SubmitButton size="medium" extraClass={button}>
+            Сохранить
+          </SubmitButton>
+        </div>
+      )}
+    </form>
   );
 }

@@ -1,0 +1,59 @@
+.orderCard {
+  background-color: var(--color-grey-dark);
+  width: 584px;
+  border-radius: 40px;
+  padding: 24px;
+  box-sizing: border-box;
+
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.orderCreationDate {
+  color: var(--color-grey-light);
+}
+
+.ingredientsInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.burgerPrice {
+  display: flex;
+}
+
+.ingredientsImages {
+  display: flex;
+}
+
+.ingredientsImage {
+  width: 64px;
+  height: 64px;
+  border: 3px solid #801AB2;
+  background-color: black;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.test {
+  transform: translate(-15px);
+}
+
+.link:hover {
+  text-decoration: none;
+}
+
+.ingredientsImageContainer {
+  position: relative;
+}
+
+.number {
+  position: absolute;
+  top: 25px;
+  left: -55px;
+  text-align: center;
+}

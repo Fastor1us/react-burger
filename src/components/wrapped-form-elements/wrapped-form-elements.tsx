@@ -1,5 +1,4 @@
-import { useSelector } from 'react-redux';
-import { TRootState } from '../../store/store';
+import { useSelector } from '../../utils/hooks/hooks';
 
 import {
   Button,
@@ -17,7 +16,7 @@ type WrappedComponentProps = {
 // HOC
 const WrapperFormElement = (Component: React.ComponentType<WrappedComponentProps>) => {
   return function WrappedComponent(props: WrappedComponentProps) {
-    const requestPending = useSelector((store: TRootState) => store.userAccData.request);
+    const requestPending = useSelector(store => store.userAccData.request);
     return <Component {...props} disabled={requestPending} />
   }
 }

@@ -2,10 +2,9 @@ import { useState, useCallback, useEffect, useMemo } from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
-import ModalOrderDetails from '../modal/modal-order-details/modal-order-details';
-import { useSelector } from 'react-redux';
+import ModalNewOrderDetails from '../modal/modal-new-order-details/modal-new-order-details';
+import { useDispatch, useSelector } from '../../utils/hooks/hooks';
 import ChosenIngredient from './chosen-ingredient/chosen-ingredient';
-import { useDispatch } from 'react-redux';
 import { changeIngredientPosition } from '../../store/slicers/chosenIngredientsSlicer';
 import { resetChosenIngredientStore } from '../../store/slicers/chosenIngredientsSlicer';
 import { addIngredient } from '../../store/slicers/chosenIngredientsSlicer';
@@ -13,7 +12,6 @@ import { setOrderInfo } from '../../store/slicers/orderInfoSlicer';
 import { useDrop } from 'react-dnd';
 import { burgerAPI } from '../../utils/api/burger-api';
 import { useNavigate } from 'react-router-dom';
-import { TRootState } from '../../store/store';
 import { TIngredientItem } from '../../../interfaces/ingredient-item-type';
 
 
@@ -23,7 +21,7 @@ export default function BurgerConstructor() {
   const [showModal, setShowModal] = useState(false);
   const [showLoadingModal, setShowLoadingModal] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
-  const { bun, topping } = useSelector((store: TRootState) => store.chosenIngredients);
+  const { bun, topping } = useSelector(store => store.chosenIngredients);
 
   useMemo(() => {
     setTotalPrice([bun, bun, ...topping].map((i) => i.price).reduce((acc, curr) => acc + curr) || 0);
@@ -131,7 +129,7 @@ export default function BurgerConstructor() {
       )}
       {showModal && (
         <Modal setVisible={setShowModal}>
-          <ModalOrderDetails />
+          <ModalNewOrderDetails />
         </Modal>
       )}
     </section>

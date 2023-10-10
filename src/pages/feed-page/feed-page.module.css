@@ -1,0 +1,49 @@
+.feedPageTitle {
+  width: 100%;
+}
+
+.mainContainer {
+  display: flex;
+  gap: 40px;
+  width: 1248px;
+}
+
+.orderFeed {
+  max-height: calc(100vh - 300px);
+  overflow-y: scroll;
+  padding-right: 5px;
+  min-width: 600px;
+}
+
+.orderFeed::-webkit-scrollbar {
+  width: 10px;
+}
+
+.orderFeed::-webkit-scrollbar-track {
+  border-radius: 2px;
+  background: var(--color-grey);
+}
+
+.orderFeed::-webkit-scrollbar-thumb {
+  background-color: var(--color-grey-light);
+  border-radius: 2px;
+}
+
+.ordersStatus {
+  display: flex;
+}
+
+.ordersStatusList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(100px, 1fr));
+  grid-template-rows: repeat(5, 1fr);
+  grid-auto-flow: column;
+  row-gap: 5px;
+  column-gap: 10px;
+  max-width: 300px;
+  overflow: hidden;
+}
+
+.ordersDoneNumber {
+  color: #00CCCC;
+}

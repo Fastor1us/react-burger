@@ -1,17 +1,16 @@
 import styles from './ingredient-item.module.css';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../../../utils/hooks/hooks';
 import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';
 import { TIngredientItem } from '../../../../../interfaces/ingredient-item-type';
-import { TRootState } from '../../../../store/store';
+import { Price } from '../../../price';
 
 
 export default function IngredientItem(props: TIngredientItem) {
   const location = useLocation();
 
   const { bun: chosenBun, topping: chosenIngredients } =
-    useSelector((store: TRootState) => store.chosenIngredients);
+    useSelector(store => store.chosenIngredients);
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'newIngredient',
@@ -43,10 +42,9 @@ export default function IngredientItem(props: TIngredientItem) {
         className={ingredientCard}
       >
         <img src={props.image} alt={props.name} />
-        <p className={ingredientDescription}>
-          <span className='text text_type_digits-default mr-2'>{props.price}</span>
-          <CurrencyIcon type='primary' />
-        </p>
+        <Price extraClasses='mt-1 mb-1'>
+          {props.price}
+        </Price>
         <p className={`${ingredientDescription} text text_type_main-small`}>
           {props.name}
         </p>
