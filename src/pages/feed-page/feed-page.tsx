@@ -1,28 +1,29 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from '../../utils/hooks/hooks';
 
 import styles from './feed-page.module.css';
 
 import OrderFeedCard from '../../components/order-feed-card/order-feed-card';
 
-import { useDispatch, useSelector } from '../../utils/hooks/hooks';
-
 import { TWsOrderCard } from '../../../interfaces/ws-order-card';
+
+import { wsInit, wsClose } from '../../store/slicers/wsSlicer';
 
 
 export default function FeedPage() {
   const dispatch = useDispatch();
-  const { orders, total, totalToday } = useSelector(store => store.ws);
+  const { orders, total, totalToday, isConnected } = useSelector(store => store.ws);
 
   useEffect(() => {
-    dispatch({ type: 'wsInit' });
+    dispatch(wsInit({ wsUrl: 'wss://norma.nomoreparties.space/orders/all' }))
     return () => {
-      dispatch({ type: 'wsClose' });
+      dispatch(wsClose());
     }
   }, []);
 
   return (
     <>
-      {orders?.length > 0 && (<>
+      {isConnected && orders?.length > 0 && (<>
         <h1 className={`${styles.feedPageTitle} text text_type_main-large mt-10 mb-5`}>
           Лента заказов
         </h1>
@@ -79,7 +80,7 @@ export default function FeedPage() {
             </p>
           </section>
         </section>
-      </>) || <h2>Загрузка...</h2>}
+      </>) || <h2 className='text text_type_main-medium mt-10'>Загрузка...</h2>}
     </>
   );
 }

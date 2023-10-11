@@ -1,6 +1,6 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';
 import { TIngredientItem } from '../../../interfaces/ingredient-item-type';
-
+import type { TSliceActions } from '../../../interfaces/slice-actions';
 
 type TState = {
   bun: {
@@ -48,5 +48,7 @@ export const { addIngredient,
   removeIngredient,
   changeIngredientPosition,
   resetChosenIngredientStore } = chosenIngredientsSlicer.actions;
+
+export type TChosenIngredientsActions = TSliceActions<typeof chosenIngredientsSlicer.actions>;
 
 export default chosenIngredientsSlicer.reducer;

@@ -1,4 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  ActionCreatorWithPayload,
+  ActionCreatorWithoutPayload
+} from '@reduxjs/toolkit';
+import type { TSliceActions } from '../../../interfaces/slice-actions';
 
 const initialState = {
   isConnected: false,
@@ -12,6 +17,8 @@ const wsSlicer = createSlice({
   name: 'wsSlicer',
   initialState,
   reducers: {
+    wsInit(state, action) { },
+    wsClose() { },
     onOpen(state) {
       state.isConnected = true;
     },
@@ -34,7 +41,18 @@ const wsSlicer = createSlice({
 });
 
 export const {
-  onOpen, onMessage, onError, onClose
+  wsInit, wsClose, onOpen, onMessage, onError, onClose
 } = wsSlicer.actions;
+
+export type TWsActionsRename = TSliceActions<typeof wsSlicer.actions>;
+
+export type TWsActions = {
+  wsInit: ActionCreatorWithPayload<{ wsUrl: string }, "wsSlicer/wsInit">,
+  wsClose: ActionCreatorWithoutPayload<"wsSlicer/wsClose">,
+  onOpen: ActionCreatorWithoutPayload<"wsSlicer/onOpen">,
+  onMessage: ActionCreatorWithPayload<string, "wsSlicer/onMessage">,
+  onError: ActionCreatorWithPayload<string, "wsSlicer/onError">,
+  onClose: ActionCreatorWithoutPayload<"wsSlicer/onClose">,
+};
 
 export default wsSlicer.reducer;

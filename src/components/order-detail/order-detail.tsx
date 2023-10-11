@@ -12,7 +12,7 @@ export default function OrderDetail() {
   const { id = '' } = useParams<{ id: string }>();
   const wsData = useSelector(store => store.ws);
   const [orderData, setOrderData] = useState<TWsOrderCard>();
-  const { data } = burgerAPI.useFetchOrderInfoByOrderIdQuery(id);
+  const { data, isLoading, isError } = burgerAPI.useFetchOrderInfoByOrderIdQuery(id);
   useEffect(() => {
     if (wsData.orders && wsData.isConnected) {
       wsData.orders.find((item: TWsOrderCard) => {
@@ -31,6 +31,7 @@ export default function OrderDetail() {
 
   return (
     <>
+      {isLoading && <h2 className='text text_type_main-medium'>Загрузка...</h2>}
       {orderData && (
         <section className={styles.orderCard}>
           <p className={`${styles.orderId} text text_type_digits-default mb-10`}>
@@ -80,7 +81,8 @@ export default function OrderDetail() {
             </Price>
           </div>
         </section >
-      ) || 'Заказ с данным номером не найден'
+      ) || (!isLoading &&
+        <h2 className='text text_type_main-medium'>Заказ с данным номером не найден</h2>)
       }
     </>
   );

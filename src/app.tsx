@@ -11,6 +11,7 @@ import FeedPage from './pages/feed-page/feed-page';
 import FeedIdPage from './pages/feed-id/feed-id-page';
 import ProfilePage from './pages/profile-page/profile-page';
 import OrderPage from './pages/order-page/order-page';
+import OrderIdPage from './pages/order-id-page/order-id-page';
 import LoginPage from './pages/login-page/login-page';
 import RegisterPage from './pages/register-page/register-page';
 import ForgotPasswordPage from './pages/forgot-password-page/forgot-password-page';
@@ -54,6 +55,7 @@ export default function App() {
           <Route index element={<OnlyAuth component={<ProfilePage />} />} />
           <Route path='/profile/orders' element={<OnlyAuth component={<OrderPage />} />} />
         </Route>
+        <Route path='/profile/orders/:id' element={<OnlyAuth component={<OrderIdPage />} />} />
         <Route path='/register' element={<OnlyUnAuth component={<RegisterPage />} />} />
         <Route path='/login' element={<OnlyUnAuth component={<LoginPage />} />} />
         <Route path='/forgot-password' element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />

@@ -4,6 +4,7 @@ import { useDispatch } from '../../utils/hooks/hooks';
 import { useEffect } from 'react';
 
 import { logoutFromUserAccThunk } from '../../store/thunks/userThunk';
+import { wsInit, wsClose } from '../../store/slicers/wsSlicer';
 
 import styles from './profile-layout.module.css';
 
@@ -13,15 +14,10 @@ export default function ProfileLayout() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch({
-      type: 'wsInit', payload:
-      {
-        wsUrl: 'wss://norma.nomoreparties.space/orders',
-        token: localStorage.getItem('accessToken'),
-      }
-    });
+    const token = localStorage.getItem('accessToken')?.slice(7);
+    dispatch(wsInit({ wsUrl: `wss://norma.nomoreparties.space/orders?token=${token}` }));
     return () => {
-      dispatch({ type: 'wsClose' });
+      dispatch(wsClose());
     }
   }, []);
 

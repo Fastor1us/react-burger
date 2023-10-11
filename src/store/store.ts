@@ -10,6 +10,11 @@ import activeTabSlicer from './slicers/activeTabSlicer';
 import userSlicer from './slicers/userSlicer';
 import wsSlicer from './slicers/wsSlicer';
 
+import { wsInit, wsClose, onOpen, onMessage, onError, onClose } from './slicers/wsSlicer';
+
+import type { TWsActions } from './slicers/wsSlicer';
+
+
 const rootReducer = combineReducers({
   availableIngredients: availableIngredientsSlicer,
   chosenIngredients: chosenIngredientsSlicer,
@@ -20,10 +25,13 @@ const rootReducer = combineReducers({
   [burgerAPI.reducerPath]: burgerAPI.reducer,
 });
 
+
+const wsActions: TWsActions = { wsInit, wsClose, onOpen, onMessage, onError, onClose };
+
 const store = configureStore({
   reducer: rootReducer,
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(burgerAPI.middleware, socketMiddleware())
+    getDefaultMiddleware().concat(burgerAPI.middleware, socketMiddleware(wsActions))
 });
 
 export default store;
