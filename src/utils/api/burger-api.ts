@@ -47,6 +47,11 @@ export const burgerAPI = createApi({
         url: '/ingredients'
       })
     }),
+    fetchOrderInfoByOrderId: build.query({
+      query: (id: string) => ({
+        url: `/orders/${id}`
+      })
+    }),
     postOrderInfo: build.mutation({
       query: (arrOrderData) => ({
         url: '/orders',

@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import styles from './modal-ingredient-details.module.css';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { TRootState } from '../../../store/store';
+import { useSelector } from '../../../utils/hooks/hooks';
 import { TIngredientItem } from '../../../../interfaces/ingredient-item-type';
 
 
 export default function ModalIngredientDetails() {
   const { id } = useParams();
-  const data = useSelector((store: TRootState) => store.availableIngredients.data);
+  const data = useSelector(store => store.availableIngredients.data);
   const [ingredientData, setIngredientData] = useState<TIngredientItem | null>();
 
   useEffect(() => {

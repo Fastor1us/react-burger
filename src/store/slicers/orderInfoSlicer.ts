@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { TIngredientItem } from '../../../interfaces/ingredient-item-type';
+import type { TSliceActions } from '../../../interfaces/slice-actions';
 
 type TOwner = {
   name: string;
@@ -45,5 +46,7 @@ const orderInfoSlicer = createSlice({
 });
 
 export const { setOrderInfo } = orderInfoSlicer.actions;
+
+export type TOrderInfoActions = TSliceActions<typeof orderInfoSlicer.actions>;
 
 export default orderInfoSlicer.reducer;

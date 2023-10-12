@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import type { TSliceActions } from '../../../interfaces/slice-actions';
 
 type TState = {
   request: boolean;
@@ -64,5 +65,7 @@ export const {
   getUserInfoSuccess,
   patchUserDataSuccess
 } = userSlicer.actions;
+
+export type TUserActions = TSliceActions<typeof userSlicer.actions>;
 
 export default userSlicer.reducer;

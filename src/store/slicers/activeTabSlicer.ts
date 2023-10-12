@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-import { TBurgerIngridientTabs } from '../../../interfaces/burger-ingredient-tabs-type'
+import { TBurgerIngridientTabs } from '../../../interfaces/burger-ingredient-tabs-type';
+import type { TSliceActions } from '../../../interfaces/slice-actions';
 
 
 const initialState: TBurgerIngridientTabs = {
@@ -20,5 +20,7 @@ const activeTabSlicer = createSlice({
 });
 
 export const { setTabState } = activeTabSlicer.actions;
+
+export type TActiveTabActions = TSliceActions<typeof activeTabSlicer.actions>;
 
 export default activeTabSlicer.reducer;

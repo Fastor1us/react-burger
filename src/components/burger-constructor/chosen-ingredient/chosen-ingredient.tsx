@@ -3,7 +3,7 @@ import styles from './chosen-ingredient.module.css'
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { removeIngredient } from '../../../store/slicers/chosenIngredientsSlicer';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../../utils/hooks/hooks';
 import { useDrop, useDrag } from 'react-dnd';
 import { Identifier } from 'dnd-core';
 import { TIngredientItem } from '../../../../interfaces/ingredient-item-type';

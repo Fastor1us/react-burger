@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../utils/hooks/hooks';
 
 import styles from './form-error-interface.module.css'
 
-import { TRootState } from '../../store/store';
-
 
 export default function FormErrorInterface() {
-  const err = useSelector((store: TRootState) => store.userAccData.error);
-  const requestPending = useSelector((store: TRootState) => store.userAccData.request);
+  const err = useSelector(store => store.userAccData.error);
+  const requestPending = useSelector(store => store.userAccData.request);
   // если произошла ошибка, то будет выведен текст. Тогда на время загрузки меняем его на '...'
   const [isErrorOccured, setIsErrorOccured] = useState(false);
 

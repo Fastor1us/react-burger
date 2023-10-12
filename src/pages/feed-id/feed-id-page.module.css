@@ -1,0 +1,20 @@
+.orderCard {
+  width: 640px;
+}
+
+.orderId {
+  text-align: center;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+}
+
+.orderCreationDate {
+  color: var(--color-grey-light);
+}
+
+.orderPrice {
+  display: flex;
+}

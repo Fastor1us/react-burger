@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { TIngredientItem } from '../../../interfaces/ingredient-item-type';
+import type { TSliceActions } from '../../../interfaces/slice-actions';
+
 
 type TState = {
   data: TIngredientItem[];
@@ -24,5 +26,7 @@ const availableIngredientsSlicer = createSlice({
 });
 
 export const { setAvailableIngredients } = availableIngredientsSlicer.actions;
+
+export type TAvailableIngredientsActions = TSliceActions<typeof availableIngredientsSlicer.actions>;
 
 export default availableIngredientsSlicer.reducer;

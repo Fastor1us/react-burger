@@ -26,5 +26,5 @@
   margin: 0;
   height: 24px;
   margin-bottom: 8px;
-  color: #8585ad;
+  color: var(--color-grey-light);
 }

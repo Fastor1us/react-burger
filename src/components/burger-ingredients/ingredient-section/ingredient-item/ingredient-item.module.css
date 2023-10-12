@@ -12,12 +12,6 @@
   cursor: pointer;
 }
 
-.ingredientDescription {
-  margin: 0;
-  margin-top: 8px;
-  text-align: center;
-}
-
 .ingredientDescription:first-of-type {
   display: flex;
   align-items: center;

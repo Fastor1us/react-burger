@@ -1,0 +1,20 @@
+.orderFeed {
+  max-height: calc(100vh - 300px);
+  overflow-y: scroll;
+  padding-right: 5px;
+  min-width: 600px;
+}
+
+.orderFeed::-webkit-scrollbar {
+  width: 10px;
+}
+
+.orderFeed::-webkit-scrollbar-track {
+  border-radius: 2px;
+  background: var(--color-grey);
+}
+
+.orderFeed::-webkit-scrollbar-thumb {
+  background-color: var(--color-grey-light);
+  border-radius: 2px;
+}

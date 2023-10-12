@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientSection from './ingredient-section/ingredient-section';
 import styles from './burger-ingredients.module.css';
-import { useSelector } from 'react-redux';
-import { TRootState } from '../../store/store';
+import { useSelector } from '../../utils/hooks/hooks';
 
 
 export default function BurgerIngredients() {
@@ -13,9 +12,9 @@ export default function BurgerIngredients() {
     isLoading,
     isError,
     isSuccess
-  } = useSelector((store: TRootState) => store.availableIngredients);
+  } = useSelector(store => store.availableIngredients);
 
-  const tabsStatus = useSelector((store: TRootState) => store.activeTab);
+  const tabsStatus = useSelector(store => store.activeTab);
   useEffect(() => {
     tabsStatus['Булки'] !== 0 && tabsStatus['Булки'] + 2 > tabsStatus['Соусы'] ?
       setCurrentTab('Булки') : tabsStatus['Соусы'] > tabsStatus['Начинки'] ?

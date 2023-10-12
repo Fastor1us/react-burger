@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../utils/hooks/hooks';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useForm } from '../../utils/hooks/use-form';
@@ -12,7 +12,7 @@ import { loginInToUserAccThunk } from '../../store/thunks/userThunk';
 
 
 export default function LoginPage() {
-  const dispatch: (dispatch: any) => void = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { values, handleChange } = useForm({ email: 'fastorius@bk.ru', password: 'zxc123' });

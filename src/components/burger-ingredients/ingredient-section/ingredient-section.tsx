@@ -1,16 +1,15 @@
 import { useCallback } from 'react';
 import styles from './ingredient-section.module.css';
 import IngredientItem from './ingredient-item/ingredient-item';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../../utils/hooks/hooks';
 import { useEffect } from 'react';
 import { setTabState } from '../../../store/slicers/activeTabSlicer';
-import { TRootState } from '../../../store/store';
 import { TBurgerIngridientTabs } from '../../../../interfaces/burger-ingredient-tabs-type';
 
 
 export default function IngredientSection(props: { children: keyof TBurgerIngridientTabs; type: string; }) {
   const dispatch = useDispatch();
-  const data = useSelector((store: TRootState) => store.availableIngredients.data);
+  const data = useSelector(store => store.availableIngredients.data);
 
   const intersectionCallback = useCallback((entries: { intersectionRatio: number }[]) => {
     entries.forEach((entry) => {
