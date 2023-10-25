@@ -37,6 +37,7 @@ export default function IngredientItem(props: TIngredientItem) {
   return (
     <Link key={props._id} to={`/ingredients/${props._id}`}
       state={{ background: location }} className={styles.link}
+      data-cy='ingredientItem'
     >
       <figure ref={dragRef} style={{ opacity }}
         className={ingredientCard}

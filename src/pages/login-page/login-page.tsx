@@ -25,7 +25,7 @@ export default function LoginPage() {
 
   return (
     <section className={styles.container}>
-      <h2 className="text text_type_main-medium mb-6">
+      <h2 className='text text_type_main-medium mb-6'>
         Вход
       </h2>
       <form onSubmit={onSubmit} className={styles.form}>
@@ -33,16 +33,18 @@ export default function LoginPage() {
           type='email'
           onChange={handleChange}
           value={values.email}
-          extraClass="mb-6"
+          extraClass='mb-6'
+          data-cy='email'
         />
         <FormInput
           type='password'
           onChange={handleChange}
           value={values.password}
-          extraClass="mb-6"
+          extraClass='mb-6'
+          data-cy='password'
         />
         <FormErrorInterface />
-        <SubmitButton size="medium" extraClass='mb-20'>
+        <SubmitButton size='medium' extraClass='mb-20' data-cy='loginBtn'>
           Войти
         </SubmitButton>
       </form>

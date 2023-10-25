@@ -79,7 +79,7 @@ export default function BurgerConstructor() {
 
   return (
     <section>
-      <section ref={dropRef} className={getItem && !('index' in getItem) ? burgerConstructor : ''}>
+      <section ref={dropRef} className={getItem && !('index' in getItem) ? burgerConstructor : ''} data-cy='dropZone'>
         <ol className={choosenIngredientList}>
           <li className='ml-8 mb-4'>
             <ConstructorElement
@@ -117,6 +117,7 @@ export default function BurgerConstructor() {
           size='medium'
           onClick={onOrderBtnClick}
           disabled={bun.price === 0 || (isLoading ? (isLoading && showLoadingModal) : false)}
+          data-cy='orderBtn'
         >
           Оформить заказ
         </Button>

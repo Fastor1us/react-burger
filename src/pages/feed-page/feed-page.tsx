@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from '../../utils/hooks/hooks';
 
 import styles from './feed-page.module.css';

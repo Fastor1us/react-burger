@@ -10,7 +10,8 @@ import BurgerConstructor from '../../components/burger-constructor/burger-constr
 export default function HomePage() {
   return (
     <>
-      <h1 className={`${appStyles.mainTitle} text text_type_main-large mt-10 mb-5`}>
+      <h1 className={`${appStyles.mainTitle} text text_type_main-large mt-10 mb-5`}
+        data-cy='mainPageTitle'>
         Соберите бургер
       </h1>
       <DndProvider backend={HTML5Backend}>

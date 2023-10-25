@@ -5,6 +5,14 @@ import {
 } from '@reduxjs/toolkit';
 import type { TSliceActions } from '../../../interfaces/slice-actions';
 
+type TState = {
+  isConnected: boolean;
+  orders: number[];
+  total: number;
+  totalToday: number;
+  error: string | null;
+}
+
 const initialState = {
   isConnected: false,
   orders: [],
