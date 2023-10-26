@@ -11,4 +11,3 @@
 - Unit/e2e-tests
 - Deployment
 ```
-git

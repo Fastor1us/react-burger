@@ -8,6 +8,7 @@ import userReducer, {
   patchUserDataSuccess,
 } from '../userSlicer';
 
+
 describe('userSlicer', () => {
   let store;
   beforeEach(() => {
@@ -16,12 +17,13 @@ describe('userSlicer', () => {
     });
   });
 
-  const testUserAction = (action, payload) => {
-    store.dispatch(action(payload));
+  const testUserAction = (action) => {
+    const testUserData = { user: { name: 'John Doe', email: 'johndoe@example.com' } };
+    store.dispatch(action(testUserData));
 
     const state = store.getState();
-    expect(state.user.name).toEqual(payload.user.name);
-    expect(state.user.email).toEqual(payload.user.email);
+    expect(state.user.name).toEqual(testUserData.user.name);
+    expect(state.user.email).toEqual(testUserData.user.email);
   };
 
   test(`'request'`, () => {
@@ -43,13 +45,11 @@ describe('userSlicer', () => {
   });
 
   test(`'registerNewUserSuccess'`, () => {
-    const payload = { user: { name: 'John Doe', email: 'johndoe@example.com' } };
-    testUserAction(registerNewUserSuccess, payload);
+    testUserAction(registerNewUserSuccess);
   });
 
   test(`'loginInToUserAccSuccess'`, () => {
-    const payload = { user: { name: 'John Doe', email: 'johndoe@example.com' } };
-    testUserAction(loginInToUserAccSuccess, payload);
+    testUserAction(loginInToUserAccSuccess);
   });
 
   test(`'logoutFromUserAccSuccess'`, () => {
@@ -61,12 +61,10 @@ describe('userSlicer', () => {
   });
 
   test(`'getUserInfoSuccess'`, () => {
-    const payload = { user: { name: 'John Doe', email: 'johndoe@example.com' } };
-    testUserAction(getUserInfoSuccess, payload);
+    testUserAction(getUserInfoSuccess);
   });
 
   test(`'patchUserDataSuccess'`, () => {
-    const payload = { user: { name: 'John Doe', email: 'johndoe@example.com' } };
-    testUserAction(patchUserDataSuccess, payload);
+    testUserAction(patchUserDataSuccess);
   });
 });

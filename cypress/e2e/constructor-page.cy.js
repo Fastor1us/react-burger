@@ -3,7 +3,7 @@ describe('Constructor page functionality', () => {
 
   beforeEach(() => {
     cy.viewport(1280, 720);
-    cy.visit('http://localhost:3000');
+    cy.visit('/');
   });
 
   it('should open Constructor page by default', () => {
