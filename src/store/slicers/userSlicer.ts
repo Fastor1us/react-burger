@@ -3,7 +3,7 @@ import type { TSliceActions } from '../../../interfaces/slice-actions';
 
 type TState = {
   request: boolean;
-  error: boolean | null;
+  error: string | null;
   isAuthChecked: boolean;
   user: {
     name: string;
